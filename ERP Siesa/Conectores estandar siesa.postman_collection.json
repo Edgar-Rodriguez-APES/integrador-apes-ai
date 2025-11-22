@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "bc521864-6f61-4191-a22b-ee7a01fde5bb",
+		"name": "Conectores estandar siesa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42597063",
+		"_collection_link": "https://lunar-satellite-622739.postman.co/workspace/7aaf67a7-52ba-4a8b-8e71-2bc5ce385f66/collection/42597063-bc521864-6f61-4191-a22b-ee7a01fde5bb?action=share&source=collection_link&creator=42597063"
+	},
+	"item": [
+		{
+			"name": "Escritura - Movimientos Inventario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Inicial\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ],\r\n  \"Documentos\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"F_CONSEC_AUTO_REG\": \"\",\r\n      \"f350_id_co\": \"\",\r\n      \"f350_id_tipo_docto\": \"\",\r\n      \"f350_consec_docto\": \"\",\r\n      \"f350_fecha\": \"\",\r\n      \"f350_id_tercero\": \"\",\r\n      \"f350_id_clase_docto\": \"\",\r\n      \"f350_ind_estado\": \"\",\r\n      \"f350_ind_impresion\": \"\",\r\n      \"f350_notas\": \"\",\r\n      \"f450_id_concepto\": \"\",\r\n      \"f450_id_bodega_salida\": \"\",\r\n      \"f450_id_bodega_entrada\": \"\",\r\n      \"f450_docto_alterno\": \"\",\r\n      \"f350_id_co_base\": \"\",\r\n      \"f350_id_tipo_docto_base\": \"\",\r\n      \"f350_consec_docto_base\": \"\",\r\n      \"f462_id_vehiculo\": \"\",\r\n      \"f462_id_tercero_transp\": \"\",\r\n      \"f462_id_sucursal_transp\": \"\",\r\n      \"f462_id_tercero_conductor\": \"\",\r\n      \"f462_nombre_conductor\": \"\",\r\n      \"f462_identif_conductor\": \"\",\r\n      \"f462_numero_guia\": \"\",\r\n      \"f462_cajas\": \"\",\r\n      \"f462_peso\": \"\",\r\n      \"f462_volumen\": \"\",\r\n      \"f462_valor_seguros\": \"\",\r\n      \"f462_notas\": \"\"\r\n    }\r\n  ],\r\n  \"Movimientos\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"f470_id_co\": \"\",\r\n      \"f470_id_tipo_docto\": \"\",\r\n      \"f470_consec_docto\": \"\",\r\n      \"f470_nro_registro\": \"\",\r\n      \"f470_id_bodega\": \"\",\r\n      \"f470_id_ubicacion_aux\": \"\",\r\n      \"f470_id_lote\": \"\",\r\n      \"f470_id_concepto\": \"\",\r\n      \"f470_id_motivo\": \"\",\r\n      \"f470_id_co_movto\": \"\",\r\n      \"f470_id_ccosto_movto\": \"\",\r\n      \"f470_id_proyecto\": \"\",\r\n      \"f470_id_unidad_medida\": \"\",\r\n      \"f470_cant_base\": \"\",\r\n      \"f470_cant_2\": \"\",\r\n      \"f470_costo_prom_uni\": \"\",\r\n      \"f470_notas\": \"\",\r\n      \"f470_desc_varible\": \"\",\r\n      \"F_DESC_ITEM\": \"\",\r\n      \"F_ID_UM_INVENTARIO\": \"\",\r\n      \"f470_id_ubicacion_aux_ent\": \"\",\r\n      \"f470_id_lote_ent\": \"\",\r\n      \"f470_id_item\": \"\",\r\n      \"f470_referencia_item\": \"\",\r\n      \"f470_codigo_barras\": \"\",\r\n      \"f470_id_ext1_detalle\": \"\",\r\n      \"f470_id_ext2_detalle\": \"\",\r\n      \"f470_id_un_movto\": \"\"\r\n    }\r\n  ],\r\n  \"Final\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/conectoresimportarestandar?idCompania=8585&idDocumento=142951&nombreDocumento=API_v1_Inventarios_Comercial_DocumentoInv",
+					"protocol": "https",
+					"host": [
+						"serviciosqa",
+						"siesacloud",
+						"com"
+					],
+					"path": [
+						"api",
+						"siesa",
+						"v3",
+						"conectoresimportarestandar"
+					],
+					"query": [
+						{
+							"key": "idCompania",
+							"value": "8585"
+						},
+						{
+							"key": "idDocumento",
+							"value": "142951"
+						},
+						{
+							"key": "nombreDocumento",
+							"value": "API_v1_Inventarios_Comercial_DocumentoInv"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Escritura - Recepciones de compra",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Inicial\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ],\r\n  \"Documentos\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"F_CONSEC_AUTO_REG\": \"\",\r\n      \"f350_id_co\": \"\",\r\n      \"f350_id_tipo_docto\": \"\",\r\n      \"f350_consec_docto\": \"\",\r\n      \"f350_fecha\": \"\",\r\n      \"f350_id_tercero\": \"\",\r\n      \"f350_ind_estado\": \"\",\r\n      \"f350_ind_impresion\": \"\",\r\n      \"f350_notas\": \"\",\r\n      \"f451_id_sucursal_prov\": \"\",\r\n      \"f451_id_tercero_comprador\": \"\",\r\n      \"f451_num_docto_referencia\": \"\",\r\n      \"f451_id_moneda_docto\": \"\",\r\n      \"f451_id_moneda_conv\": \"\",\r\n      \"f451_tasa_conv\": \"\",\r\n      \"f451_id_moneda_local\": \"\",\r\n      \"f451_tasa_local\": \"\",\r\n      \"f451_tasa_dscto_global1\": \"\",\r\n      \"f451_tasa_dscto_global2\": \"\",\r\n      \"f462_id_vehiculo\": \"\",\r\n      \"f462_id_tercero_transp\": \"\",\r\n      \"f462_id_sucursal_transp\": \"\",\r\n      \"f462_id_tercero_conductor\": \"\",\r\n      \"f462_nombre_conductor\": \"\",\r\n      \"f462_identif_conductor\": \"\",\r\n      \"f462_numero_guia\": \"\",\r\n      \"f462_cajas\": \"\",\r\n      \"f462_peso\": \"\",\r\n      \"f462_volumen\": \"\",\r\n      \"f462_valor_seguros\": \"\",\r\n      \"f462_notas\": \"\",\r\n      \"f451_ind_consignacion\": \"\",\r\n      \"f420_id_co_docto\": \"\",\r\n      \"f420_id_tipo_docto\": \"\",\r\n      \"f420_consec_docto\": \"\",\r\n      \"f420_ind_modo_sobrecosto\": \"\"\r\n    }\r\n  ],\r\n  \"Movimientos\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"f470_id_co\": \"\",\r\n      \"f470_id_tipo_docto\": \"\",\r\n      \"f470_consec_docto\": \"\",\r\n      \"f470_nro_registro\": \"\",\r\n      \"f470_id_bodega\": \"\",\r\n      \"f470_id_ubicacion_aux\": \"\",\r\n      \"f470_id_lote\": \"\",\r\n      \"f470_id_unidad_medida\": \"\",\r\n      \"f421_fecha_entrega\": \"\",\r\n      \"f470_cant_base\": \"\",\r\n      \"f470_cant_2\": \"\",\r\n      \"f470_notas\": \"\",\r\n      \"f470_id_item\": \"\",\r\n      \"f470_referencia_item\": \"\",\r\n      \"f470_codigo_barras\": \"\",\r\n      \"f470_id_ext1_detalle\": \"\",\r\n      \"f470_id_ext2_detalle\": \"\",\r\n      \"f470_id_ccosto_movto\": \"\",\r\n      \"f470_id_proyecto\": \"\",\r\n      \"f470_rowid\": \"\"\r\n    }\r\n  ],\r\n  \"Final\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/conectoresimportarestandar?idCompania=8585&idDocumento=142948&nombreDocumento=API_v1_Compras_Comercial_EntradaOC",
+					"protocol": "https",
+					"host": [
+						"serviciosqa",
+						"siesacloud",
+						"com"
+					],
+					"path": [
+						"api",
+						"siesa",
+						"v3",
+						"conectoresimportarestandar"
+					],
+					"query": [
+						{
+							"key": "idCompania",
+							"value": "8585"
+						},
+						{
+							"key": "idDocumento",
+							"value": "142948"
+						},
+						{
+							"key": "nombreDocumento",
+							"value": "API_v1_Compras_Comercial_EntradaOC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Escritura - Despachos de pedidos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Inicial\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ],\r\n  \"Remision\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"F_CONSEC_AUTO_REG\": \"\",\r\n      \"F350_ID_CO\": \"\",\r\n      \"F350_ID_TIPO_DOCTO\": \"\",\r\n      \"F350_CONSEC_DOCTO\": \"\",\r\n      \"F350_FECHA\": \"\",\r\n      \"F350_IND_ESTADO\": \"\",\r\n      \"F350_IND_IMPRESION\": \"\",\r\n      \"F430_ID_TIPO_DOCTO\": \"\",\r\n      \"F430_CONSEC_DOCTO\": \"\",\r\n      \"f462_id_vehiculo\": \"\",\r\n      \"f462_id_tercero_transp\": \"\",\r\n      \"f462_id_sucursal_transp\": \"\",\r\n      \"f462_id_tercero_conductor\": \"\",\r\n      \"f462_nombre_conductor\": \"\",\r\n      \"f462_identif_conductor\": \"\",\r\n      \"f462_numero_guia\": \"\",\r\n      \"f462_cajas\": \"\",\r\n      \"f462_peso\": \"\",\r\n      \"f462_volumen\": \"\",\r\n      \"f462_valor_seguros\": \"\",\r\n      \"f462_notas\": \"\",\r\n      \"f460_id_cond_pago\": \"\"\r\n    }\r\n  ],\r\n  \"Movtoventascomercial\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"f470_id_co\": \"\",\r\n      \"f470_id_tipo_docto\": \"\",\r\n      \"f470_consec_docto\": \"\",\r\n      \"f470_nro_registro\": \"\",\r\n      \"f470_id_bodega\": \"\",\r\n      \"f470_id_ubicacion_aux\": \"\",\r\n      \"f470_id_lote\": \"\",\r\n      \"f470_id_concepto\": \"\",\r\n      \"f470_id_motivo\": \"\",\r\n      \"f470_ind_obsequio\": \"\",\r\n      \"f470_id_co_movto\": \"\",\r\n      \"f470_id_ccosto_movto\": \"\",\r\n      \"f470_id_proyecto\": \"\",\r\n      \"f470_id_lista_precio\": \"\",\r\n      \"f470_id_unidad_precio\": \"\",\r\n      \"f470_id_unidad_medida\": \"\",\r\n      \"f470_cant_base\": \"\",\r\n      \"f470_cant_2\": \"\",\r\n      \"f470_vlr_bruto\": \"\",\r\n      \"f470_ind_naturaleza\": \"\",\r\n      \"f470_ind_solo_valor\": \"\",\r\n      \"f470_ind_impto_asumido\": \"\",\r\n      \"f470_notas\": \"\",\r\n      \"f470_desc_variable\": \"\",\r\n      \"F_DESC_ITEM\": \"\",\r\n      \"F_ID_UM_INVENTARIO\": \"\",\r\n      \"f470_id_item\": \"\",\r\n      \"f470_referencia_item\": \"\",\r\n      \"f470_codigo_barras\": \"\",\r\n      \"f470_id_ext1_detalle\": \"\",\r\n      \"f470_id_ext2_detalle\": \"\",\r\n      \"f470_id_un_movto\": \"\",\r\n      \"f470_id_causal_devol\": \"\"\r\n    }\r\n  ],\r\n  \"Final\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/conectoresimportarestandar?idCompania=8585&idDocumento=142945&nombreDocumento=API_v1_Ventas_Comercial_RemisionPedido",
+					"protocol": "https",
+					"host": [
+						"serviciosqa",
+						"siesacloud",
+						"com"
+					],
+					"path": [
+						"api",
+						"siesa",
+						"v3",
+						"conectoresimportarestandar"
+					],
+					"query": [
+						{
+							"key": "idCompania",
+							"value": "8585"
+						},
+						{
+							"key": "idDocumento",
+							"value": "142945"
+						},
+						{
+							"key": "nombreDocumento",
+							"value": "API_v1_Ventas_Comercial_RemisionPedido"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Escritura - Transferencias Inventario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Inicial\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ],\r\n  \"Documentos\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"F_CONSEC_AUTO_REG\": \"\",\r\n      \"f350_id_co\": \"\",\r\n      \"f350_id_tipo_docto\": \"\",\r\n      \"f350_consec_docto\": \"\",\r\n      \"f350_fecha\": \"\",\r\n      \"f350_id_tercero\": \"\",\r\n      \"f350_ind_estado\": \"\",\r\n      \"f350_ind_impresion\": \"\",\r\n      \"f350_notas\": \"\",\r\n      \"f450_id_bodega_salida\": \"\",\r\n      \"f450_id_bodega_entrada\": \"\"\r\n    }\r\n  ],\r\n  \"Movimiento de Seriales\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"f479_id_co\": \"\",\r\n      \"f479_id_tipo_docto\": \"\",\r\n      \"f479_consec_docto\": \"\",\r\n      \"f479_nro_registro\": \"\",\r\n      \"f479_id_serial\": \"\",\r\n      \"f479_fecha_garantia\": \"\",\r\n      \"f479_notas\": \"\"\r\n    }\r\n  ],\r\n  \"Movimientos\": [\r\n    {\r\n      \"F_CIA\": \"\",\r\n      \"f470_id_co\": \"\",\r\n      \"f470_id_tipo_docto\": \"\",\r\n      \"f470_consec_docto\": \"\",\r\n      \"f470_nro_registro\": \"\",\r\n      \"f470_id_bodega\": \"\",\r\n      \"f470_id_ubicacion_aux\": \"\",\r\n      \"f470_id_lote\": \"\",\r\n      \"f470_id_motivo\": \"\",\r\n      \"f470_id_co_movto\": \"\",\r\n      \"f470_id_ccosto_movto\": \"\",\r\n      \"f470_id_proyecto\": \"\",\r\n      \"f470_id_unidad_medida\": \"\",\r\n      \"f470_cant_base\": \"\",\r\n      \"f470_cant_2\": \"\",\r\n      \"f470_costo_prom_uni\": \"\",\r\n      \"f470_notas\": \"\",\r\n      \"f470_desc_varible\": \"\",\r\n      \"f470_id_ubicacion_aux_ent\": \"\",\r\n      \"f470_id_lote_ent\": \"\",\r\n      \"f470_id_item\": \"\",\r\n      \"f470_referencia_item\": \"\",\r\n      \"f470_codigo_barras\": \"\",\r\n      \"f470_id_ext1_detalle\": \"\",\r\n      \"f470_id_ext2_detalle\": \"\",\r\n      \"f470_id_un_movto\": \"\",\r\n      \"f470_rowid_movto\": \"\"\r\n    }\r\n  ],\r\n  \"Final\": [\r\n    {\r\n      \"F_CIA\": \"\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/conectoresimportarestandar?idCompania=8585&idDocumento=173066&nombreDocumento=API_v1_Inventarios_Comercial_TransferenciaDirecta",
+					"protocol": "https",
+					"host": [
+						"serviciosqa",
+						"siesacloud",
+						"com"
+					],
+					"path": [
+						"api",
+						"siesa",
+						"v3",
+						"conectoresimportarestandar"
+					],
+					"query": [
+						{
+							"key": "idCompania",
+							"value": "8585"
+						},
+						{
+							"key": "idDocumento",
+							"value": "173066"
+						},
+						{
+							"key": "nombreDocumento",
+							"value": "API_v1_Inventarios_Comercial_TransferenciaDirecta"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,1001 @@
+{
+	"info": {
+		"_postman_id": "a84cc56f-6495-4bca-b110-5cdded60e9ee",
+		"name": "Consultas estandar siesa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26210231"
+	},
+	"item": [
+		{
+			"name": "Consultas estandar siesa",
+			"item": [
+				{
+					"name": "co_items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Items&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Items"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ItemsExtensiones",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_ItemsExtensiones&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_ItemsExtensiones"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ItemsUnidadesMedida",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_ItemsUnidadesMedida&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_ItemsUnidadesMedida"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ItemsCriterios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_ItemsCriterios&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_ItemsCriterios"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ItemsBarras",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_ItemsBarras&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_ItemsBarras"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bodegas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Bodegas&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Bodegas"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compras_Ordenes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Compras_Ordenes&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Compras_Ordenes"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_CierresOrdenesDeProduccion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_CierresOrdenesDeProduccion&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_CierresOrdenesDeProduccion"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_ConsumosOrdenesDeProduccion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_ConsumosOrdenesDeProduccion&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_ConsumosOrdenesDeProduccion"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_EntregasOrdenesDeProduccion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_EntregasOrdenesDeProduccion&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_EntregasOrdenesDeProduccion"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_OrdenesDeProduccion_Encabezado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_OrdenesDeProduccion_Encabezado&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_OrdenesDeProduccion_Encabezado"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_OrdenesDeProduccion_ItemComponente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_OrdenesDeProduccion_ItemComponente&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_OrdenesDeProduccion_ItemComponente"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_OrdenesDeProduccion_ItemCoproducto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_OrdenesDeProduccion_ItemCoproducto&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_OrdenesDeProduccion_ItemCoproducto"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manufactura_OrdenesDeProduccion_ItemPadre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_OrdenesDeProduccion_ItemPadre&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_OrdenesDeProduccion_ItemPadre"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API_v2_Manufactura_EntregasOrdenesDeProduccion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Manufactura_EntregasOrdenesDeProduccion&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Manufactura_EntregasOrdenesDeProduccion"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API_v2_Ventas_Pedidos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Ventas_Pedidos&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Ventas_Pedidos"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API_v2_Ventas_Pedidos_Compromisos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "ConniKey",
+								"value": "925ee450b69d8744c4c5a0272ccba195",
+								"type": "text"
+							},
+							{
+								"key": "ConniToken",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0MTc5MTk2LWMzM2QtNDE1Yi1hYzlmLTIxOGFiODliZDRmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcHJpbWFyeXNpZCI6ImE5ZDVmNTQzLTdlYTQtNGY1Ny04NTlmLWNjZjNmZTMzOWJhMyJ9.0pKOAoU1AXvGNF7jzsYgYblscia8V73nAXN9DtAgvJM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://serviciosqa.siesacloud.com/api/siesa/v3/ejecutarconsultaestandar?idCompania=8585&descripcion=API_v2_Ventas_Pedidos_Compromisos&paginacion=numPag=1|tamPag=100",
+							"protocol": "https",
+							"host": [
+								"serviciosqa",
+								"siesacloud",
+								"com"
+							],
+							"path": [
+								"api",
+								"siesa",
+								"v3",
+								"ejecutarconsultaestandar"
+							],
+							"query": [
+								{
+									"key": "idCompania",
+									"value": "8585"
+								},
+								{
+									"key": "descripcion",
+									"value": "API_v2_Ventas_Pedidos_Compromisos"
+								},
+								{
+									"key": "paginacion",
+									"value": "numPag=1|tamPag=100"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

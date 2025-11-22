@@ -1,0 +1,1650 @@
+{
+	"info": {
+		"_postman_id": "0c2ed953-651f-4902-bcaa-5d0593f0ebf2",
+		"name": "WMS-Proxy-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42597063",
+		"_collection_link": "https://lunar-satellite-622739.postman.co/workspace/My-Workspace~7aaf67a7-52ba-4a8b-8e71-2bc5ce385f66/collection/42597063-0c2ed953-651f-4902-bcaa-5d0593f0ebf2?action=share&source=collection_link&creator=42597063"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Autenticación de usuarios",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"user.test\",\n  \"password\": \"mypassword123\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth"
+							]
+						},
+						"description": "Este endpoint permite autenticar al usuario en el sistema. Recibe credenciales y devuelve un token de acceso válido para las siguientes solicitudes."
+					},
+					"response": [
+						{
+							"name": "Respuesta exitosa con token JWT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"user.test\",\n  \"password\": \"mypassword123\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"token\": \"eyJhbGciOiJIUzI1...\",\n  \"attributes_user\": [\n    {\n      \"Name\": \"sub\",\n      \"Value\": null\n    },\n    {\n      \"Name\": \"email_verified\",\n      \"Value\": null\n    },\n    {\n      \"Name\": \"email\",\n      \"Value\": null\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "customers",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Actualizar un cliente existente",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Juan Pérez García\",\n  \"external_id\": \"CUST-2025-001\",\n  \"email\": \"juan.perez.nuevo@example.com\",\n  \"phone\": \"+573001234567\",\n  \"mobile_phone\": \"+573009876543\",\n  \"address\": \"Calle 50 #25-30\",\n  \"neighborhood\": \"Usaquén\",\n  \"city\": \"Bogotá\",\n  \"state\": \"Cundinamarca\",\n  \"postal_code\": \"110111\",\n  \"contact_person_name\": \"María González\",\n  \"contact_person_email\": \"maria.gonzalez@example.com\",\n  \"contact_person_phone\": \"+573101234567\",\n  \"notes\": \"Cliente preferencial con descuento del 15%\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/customers/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"customers",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "a1b2c3d4e5f6g7h8i9j0",
+											"description": "ID único del cliente"
+										}
+									]
+								},
+								"description": "Actualiza un cliente en el sistema WMS. Debe incluir la información que desea actualizar."
+							},
+							"response": [
+								{
+									"name": "Respuesta exitosa al actualizar un cliente",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Juan Pérez García\",\n  \"external_id\": \"CUST-2025-001\",\n  \"email\": \"juan.perez.nuevo@example.com\",\n  \"phone\": \"+573001234567\",\n  \"mobile_phone\": \"+573009876543\",\n  \"address\": \"Calle 50 #25-30\",\n  \"neighborhood\": \"Usaquén\",\n  \"city\": \"Bogotá\",\n  \"state\": \"Cundinamarca\",\n  \"postal_code\": \"110111\",\n  \"contact_person_name\": \"María González\",\n  \"contact_person_email\": \"maria.gonzalez@example.com\",\n  \"contact_person_phone\": \"+573101234567\",\n  \"notes\": \"Cliente preferencial con descuento del 15%\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/customers/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"customers",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"a1b2c3d4e5f6g7h8i9j0\",\n  \"name\": \"Juan Pérez García\",\n  \"external_id\": \"CUST-2025-001\",\n  \"is_default\": false,\n  \"identification_type\": \"CC\",\n  \"identification_number\": \"1234567890\",\n  \"email\": \"juan.perez.nuevo@example.com\",\n  \"phone\": \"+573001234567\",\n  \"mobile_phone\": \"+573009876543\",\n  \"address\": \"Calle 50 #25-30\",\n  \"neighborhood\": \"Usaquén\",\n  \"city\": \"Bogotá\",\n  \"state\": \"Cundinamarca\",\n  \"postal_code\": \"110111\",\n  \"contact_person_name\": \"María González\",\n  \"contact_person_email\": \"maria.gonzalez@example.com\",\n  \"contact_person_phone\": \"+573101234567\",\n  \"customer_type\": \"individual\",\n  \"notes\": \"Cliente preferencial con descuento del 15%\",\n  \"created\": \"2025-11-18T10:30:00.000000-05:00\",\n  \"created_unix_epoch\": 1731942600,\n  \"created_by_username\": \"system@technoapes.co\",\n  \"modified\": \"2025-11-18T15:45:00.000000-05:00\",\n  \"modified_unix_epoch\": 1731961500,\n  \"modified_by_username\": \"system@technoapes.co\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Listar clientes con filtros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/customers?external_id__eq=CUST-2025-001&identification_number__eq=1234567890&customer_type__eq=individual&last_evaluated_key_id=Tenant%23123-1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers"
+							],
+							"query": [
+								{
+									"key": "external_id__eq",
+									"value": "CUST-2025-001",
+									"description": "Filtra por ID externo exacto."
+								},
+								{
+									"key": "identification_number__eq",
+									"value": "1234567890",
+									"description": "Filtra por número de identificación exacto."
+								},
+								{
+									"key": "customer_type__eq",
+									"value": "individual",
+									"description": "Filtra por tipo de cliente."
+								},
+								{
+									"key": "last_evaluated_key_id",
+									"value": "Tenant#123-1",
+									"description": "Cursor de paginación (último ID leído)."
+								}
+							]
+						},
+						"description": "Devuelve una lista paginada de clientes. Soporta filtros por texto, estado, tipo de identificación e ID externo."
+					},
+					"response": [
+						{
+							"name": "Lista de clientes obtenida exitosamente",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/customers?external_id__eq=CUST-2025-001&identification_number__eq=1234567890&customer_type__eq=individual&last_evaluated_key_id=Tenant%23123-1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"customers"
+									],
+									"query": [
+										{
+											"key": "external_id__eq",
+											"value": "CUST-2025-001",
+											"description": "Filtra por ID externo exacto."
+										},
+										{
+											"key": "identification_number__eq",
+											"value": "1234567890",
+											"description": "Filtra por número de identificación exacto."
+										},
+										{
+											"key": "customer_type__eq",
+											"value": "individual",
+											"description": "Filtra por tipo de cliente."
+										},
+										{
+											"key": "last_evaluated_key_id",
+											"value": "Tenant#123-1",
+											"description": "Cursor de paginación (último ID leído)."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"results\": [\n    {\n      \"id\": \"a1b2c3d4e5f6g7h8i9j0\",\n      \"name\": \"Juan Pérez García\",\n      \"external_id\": \"CUST-2025-001\",\n      \"is_default\": false,\n      \"identification_type\": \"CC\",\n      \"identification_number\": \"1234567890\",\n      \"email\": \"juan.perez@example.com\",\n      \"phone\": \"+573001234567\",\n      \"mobile_phone\": \"+573009876543\",\n      \"address\": \"Calle 45 #23-15\",\n      \"neighborhood\": \"Chapinero\",\n      \"city\": \"Bogotá\",\n      \"state\": \"Cundinamarca\",\n      \"postal_code\": \"110231\",\n      \"contact_person_name\": \"María González\",\n      \"contact_person_email\": \"maria.gonzalez@example.com\",\n      \"contact_person_phone\": \"+573101234567\",\n      \"customer_type\": \"individual\",\n      \"notes\": \"Cliente preferencial con descuento del 10%\",\n      \"created\": \"2025-11-18T10:30:00.000000-05:00\",\n      \"modified\": \"2025-11-18T10:30:00.000000-05:00\"\n    },\n    {\n      \"id\": \"b2c3d4e5f6g7h8i9j0k1\",\n      \"name\": \"Empresa ABC Ltda\",\n      \"external_id\": \"CUST-2025-002\",\n      \"is_default\": false,\n      \"identification_type\": \"NIT\",\n      \"identification_number\": \"900123456-7\",\n      \"email\": \"contacto@empresaabc.com\",\n      \"phone\": \"+573201234567\",\n      \"customer_type\": \"business\",\n      \"city\": \"Medellín\",\n      \"state\": \"Antioquia\",\n      \"created\": \"2025-11-17T09:15:00.000000-05:00\",\n      \"modified\": \"2025-11-17T09:15:00.000000-05:00\"\n    }\n  ],\n  \"count\": 2,\n  \"warnings\": [],\n  \"limit\": 20,\n  \"last_evaluated_key_id\": \"Tenant#123-2\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear un nuevo cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Juan Pérez García\",\n  \"external_id\": \"CUST-2025-001\",\n  \"is_default\": false,\n  \"identification_type\": \"CC\",\n  \"identification_number\": \"1234567890\",\n  \"email\": \"juan.perez@example.com\",\n  \"phone\": \"+573001234567\",\n  \"mobile_phone\": \"+573009876543\",\n  \"address\": \"Calle 45 #23-15\",\n  \"neighborhood\": \"Chapinero\",\n  \"city\": \"Bogotá\",\n  \"state\": \"Cundinamarca\",\n  \"postal_code\": \"110231\",\n  \"contact_person_name\": \"María González\",\n  \"contact_person_email\": \"maria.gonzalez@example.com\",\n  \"contact_person_phone\": \"+573101234567\",\n  \"customer_type\": \"individual\",\n  \"notes\": \"Cliente preferencial con descuento del 10%\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customers"
+							]
+						},
+						"description": "Crea un cliente en el sistema WMS. Debe incluir información básica como nombre, identificación y datos de contacto."
+					},
+					"response": [
+						{
+							"name": "Respuesta exitosa al crear un cliente",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Juan Pérez García\",\n  \"external_id\": \"CUST-2025-001\",\n  \"is_default\": false,\n  \"identification_type\": \"CC\",\n  \"identification_number\": \"1234567890\",\n  \"email\": \"juan.perez@example.com\",\n  \"phone\": \"+573001234567\",\n  \"mobile_phone\": \"+573009876543\",\n  \"address\": \"Calle 45 #23-15\",\n  \"neighborhood\": \"Chapinero\",\n  \"city\": \"Bogotá\",\n  \"state\": \"Cundinamarca\",\n  \"postal_code\": \"110231\",\n  \"contact_person_name\": \"María González\",\n  \"contact_person_email\": \"maria.gonzalez@example.com\",\n  \"contact_person_phone\": \"+573101234567\",\n  \"customer_type\": \"individual\",\n  \"notes\": \"Cliente preferencial con descuento del 10%\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/customers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"customers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"a1b2c3d4e5f6g7h8i9j0\",\n  \"name\": \"Juan Pérez García\",\n  \"external_id\": \"CUST-2025-001\",\n  \"is_default\": false,\n  \"identification_type\": \"CC\",\n  \"identification_number\": \"1234567890\",\n  \"email\": \"juan.perez@example.com\",\n  \"phone\": \"+573001234567\",\n  \"mobile_phone\": \"+573009876543\",\n  \"address\": \"Calle 45 #23-15\",\n  \"neighborhood\": \"Chapinero\",\n  \"city\": \"Bogotá\",\n  \"state\": \"Cundinamarca\",\n  \"postal_code\": \"110231\",\n  \"contact_person_name\": \"María González\",\n  \"contact_person_email\": \"maria.gonzalez@example.com\",\n  \"contact_person_phone\": \"+573101234567\",\n  \"customer_type\": \"individual\",\n  \"notes\": \"Cliente preferencial con descuento del 10%\",\n  \"created\": \"2025-11-18T10:30:00.000000-05:00\",\n  \"created_unix_epoch\": 1731942600,\n  \"created_by_username\": \"system@technoapes.co\",\n  \"modified\": \"2025-11-18T10:30:00.000000-05:00\",\n  \"modified_unix_epoch\": 1731942600,\n  \"modified_by_username\": \"system@technoapes.co\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Actualiza un producto existente",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Laptop Lenovo Thinkpad\",\n  \"display_name\": \"Thinkpad X1 Carbon Gen 10\",\n  \"external_id\": \"PROD-12345\",\n  \"reference_id\": \"SKU-45678\",\n  \"reception_type\": \"GENERAL\",\n  \"barcode_type\": \"EAN\",\n  \"barcode\": \"1234567890123\",\n  \"status\": \"ACTIVE\",\n  \"sale_price\": 1200,\n  \"sale_coin\": \"USD\",\n  \"purchase_price\": 900,\n  \"purchase_coin\": \"USD\",\n  \"product_image\": \"https://example.com/img/thinkpad.png\",\n  \"inventory_unit\": \"UNIT\",\n  \"presentation\": \"Caja\",\n  \"properties\": {\n    \"volume\": 0.5,\n    \"length\": 30,\n    \"width\": 20,\n    \"large\": 3,\n    \"tall\": 2,\n    \"hight\": 2,\n    \"size\": 15,\n    \"sale_limit_days\": 365,\n    \"weigth\": 1.2,\n    \"is_on_demand\": \"false\"\n  },\n  \"groups\": [\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"category\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": \"ELECTRONICA\",\n      \"group_type\": \"group\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"type\"\n    },\n    {\n      \"group_external_id\": \"A\",\n      \"group_name\": \"A\",\n      \"group_parent_id\": null,\n      \"group_type\": \"classification\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "817de9763f494b09821c28cf5c931fec",
+											"description": "ID único del producto"
+										}
+									]
+								},
+								"description": "Actualiza un producto en el sistema WMS. La variante debe incluir la información que desea actualizar, es obligatrio enviar el external_id del producto."
+							},
+							"response": [
+								{
+									"name": "200 response",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Laptop Lenovo Thinkpad\",\n  \"display_name\": \"Thinkpad X1 Carbon Gen 10\",\n  \"external_id\": \"PROD-12345\",\n  \"reference_id\": \"SKU-45678\",\n  \"reception_type\": \"GENERAL\",\n  \"barcode_type\": \"EAN\",\n  \"barcode\": \"1234567890123\",\n  \"status\": \"ACTIVE\",\n  \"sale_price\": 1200,\n  \"sale_coin\": \"USD\",\n  \"purchase_price\": 900,\n  \"purchase_coin\": \"USD\",\n  \"product_image\": \"https://example.com/img/thinkpad.png\",\n  \"inventory_unit\": \"UNIT\",\n  \"presentation\": \"Caja\",\n  \"properties\": {\n    \"volume\": 0.5,\n    \"length\": 30,\n    \"width\": 20,\n    \"large\": 3,\n    \"tall\": 2,\n    \"hight\": 2,\n    \"size\": 15,\n    \"sale_limit_days\": 365,\n    \"weigth\": 1.2,\n    \"is_on_demand\": \"false\"\n  },\n  \"groups\": [\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"category\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": \"ELECTRONICA\",\n      \"group_type\": \"group\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"type\"\n    },\n    {\n      \"group_external_id\": \"A\",\n      \"group_name\": \"A\",\n      \"group_parent_id\": null,\n      \"group_type\": \"classification\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"product_image\": \"https://example.com/img/thinkpad.png\",\n  \"purchase_coin\": \"USD\",\n  \"purchase_price\": 900,\n  \"properties\": {\n    \"volume\": 0.5,\n    \"length\": 30,\n    \"width\": 20,\n    \"large\": 3,\n    \"tall\": 2,\n    \"hight\": 2,\n    \"size\": 15,\n    \"sale_limit_days\": 365,\n    \"weigth\": 1.2,\n    \"is_on_demand\": \"false\"\n  },\n  \"status\": \"ACTIVE\",\n  \"name\": \"Laptop Lenovo Thinkpad\",\n  \"reception_type\": \"GENERAL\",\n  \"presentation\": \"Caja\",\n  \"sale_coin\": \"USD\",\n  \"external_id\": \"PROD-12345\",\n  \"created_by_username\": \"system@technoapes.co\",\n  \"id\": \"817de9763f494b09821c28cf5c931fec\",\n  \"modified_by_username\": \"system@technoapes.co\",\n  \"reference_id\": \"SKU-45678\",\n  \"modified\": \"2025-08-30T15:18:35.784202-05:00\",\n  \"barcode\": \"1234567890123\",\n  \"created\": \"2025-08-27T16:18:36.423564-05:00\",\n  \"barcode_type\": \"EAN\",\n  \"inventory_unit\": \"UNIT\",\n  \"measure_unit\": \"UND\",\n  \"display_name\": \"Thinkpad X1 Carbon Gen 10\",\n  \"substitute_ids\": [],\n  \"groups\": [\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"category\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": \"ELECTRONICA\",\n      \"group_type\": \"group\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"type\"\n    },\n    {\n      \"group_external_id\": \"A\",\n      \"group_name\": \"A\",\n      \"group_parent_id\": null,\n      \"group_type\": \"classification\"\n    }\n  ],\n  \"sale_price\": 1200,\n  \"modified_unix_epoch\": 1756585115,\n  \"created_unix_epoch\": 1756329516\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Listar productos con filtros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products?barcode__eq=1234567890123&external_id__eq=PROD-12345&last_evaluated_key_id=Tenant%23123-1&search=smartphone&status__eq=ACTIVE&status__in=ACTIVE,INACTIVE",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "barcode__eq",
+									"value": "1234567890123",
+									"description": "Filtra por código de barras exacto."
+								},
+								{
+									"key": "external_id__eq",
+									"value": "PROD-12345",
+									"description": "Filtra por ID externo exacto."
+								},
+								{
+									"key": "last_evaluated_key_id",
+									"value": "Tenant#123-1",
+									"description": "Cursor de paginación (último ID leído)."
+								},
+								{
+									"key": "search",
+									"value": "smartphone",
+									"description": "Búsqueda textual en campos principales (nombre, codigo de barras, id externo)."
+								},
+								{
+									"key": "status__eq",
+									"value": "ACTIVE",
+									"description": "Filtra por un estado específico."
+								},
+								{
+									"key": "status__in",
+									"value": "ACTIVE,INACTIVE",
+									"description": "Filtra por múltiples estados (lista separada por comas)."
+								}
+							]
+						},
+						"description": "Devuelve una lista paginada de productos. Soporta filtros por texto, estado, código de barras e ID externo."
+					},
+					"response": [
+						{
+							"name": "200 response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/products?barcode__eq=1234567890123&external_id__eq=PROD-12345&last_evaluated_key_id=Tenant%23123-1&search=smartphone&status__eq=ACTIVE&status__in=ACTIVE,INACTIVE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "barcode__eq",
+											"value": "1234567890123",
+											"description": "Filtra por código de barras exacto."
+										},
+										{
+											"key": "external_id__eq",
+											"value": "PROD-12345",
+											"description": "Filtra por ID externo exacto."
+										},
+										{
+											"key": "last_evaluated_key_id",
+											"value": "Tenant#123-1",
+											"description": "Cursor de paginación (último ID leído)."
+										},
+										{
+											"key": "search",
+											"value": "smartphone",
+											"description": "Búsqueda textual en campos principales (nombre, codigo de barras, id externo)."
+										},
+										{
+											"key": "status__eq",
+											"value": "ACTIVE",
+											"description": "Filtra por un estado específico."
+										},
+										{
+											"key": "status__in",
+											"value": "ACTIVE,INACTIVE",
+											"description": "Filtra por múltiples estados (lista separada por comas)."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"results\": [\n    {\n      \"variant_id\": \"VAR001\",\n      \"name\": \"Smartphone X\",\n      \"barcode\": \"1234567890123\",\n      \"status\": \"ACTIVE\",\n      \"external_id\": \"EXT001\"\n    },\n    {\n      \"variant_id\": \"VAR002\",\n      \"name\": \"Smartphone Y\",\n      \"barcode\": \"9876543210987\",\n      \"status\": \"INACTIVE\",\n      \"external_id\": \"EXT002\"\n    }\n  ],\n  \"count\": 2,\n  \"warnings\": [],\n  \"limit\": 20,\n  \"last_evaluated_key_id\": \"Tenant#123-1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear un nuevo producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Laptop Lenovo Thinkpad\",\n  \"display_name\": \"Thinkpad X1 Carbon Gen 10\",\n  \"external_id\": \"PROD-12345\",\n  \"reference_id\": \"SKU-45678\",\n  \"reception_type\": \"GENERAL\",\n  \"barcode_type\": \"EAN\",\n  \"barcode\": \"1234567890123\",\n  \"status\": \"ACTIVE\",\n  \"sale_price\": 1200,\n  \"sale_coin\": \"USD\",\n  \"purchase_price\": 900,\n  \"purchase_coin\": \"USD\",\n  \"product_image\": \"https://example.com/img/thinkpad.png\",\n  \"inventory_unit\": \"UNIT\",\n  \"presentation\": \"Caja\",\n  \"properties\": {\n    \"volume\": 0.5,\n    \"length\": 30,\n    \"width\": 20,\n    \"large\": 3,\n    \"tall\": 2,\n    \"hight\": 2,\n    \"size\": 15,\n    \"sale_limit_days\": 365,\n    \"weigth\": 1.2,\n    \"is_on_demand\": \"false\"\n  },\n  \"groups\": [\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"category\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": \"ELECTRONICA\",\n      \"group_type\": \"group\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"type\"\n    },\n    {\n      \"group_external_id\": \"A\",\n      \"group_name\": \"A\",\n      \"group_parent_id\": null,\n      \"group_type\": \"classification\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "Crea un producto en el sistema WMS. La variante debe incluir información básica como nombre, código de barras, grupos y propiedades."
+					},
+					"response": [
+						{
+							"name": "Respuesta exitosa al crear un producto",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Laptop Lenovo Thinkpad\",\n  \"display_name\": \"Thinkpad X1 Carbon Gen 10\",\n  \"external_id\": \"PROD-12345\",\n  \"reference_id\": \"SKU-45678\",\n  \"reception_type\": \"GENERAL\",\n  \"barcode_type\": \"EAN\",\n  \"barcode\": \"1234567890123\",\n  \"status\": \"ACTIVE\",\n  \"sale_price\": 1200,\n  \"sale_coin\": \"USD\",\n  \"purchase_price\": 900,\n  \"purchase_coin\": \"USD\",\n  \"product_image\": \"https://example.com/img/thinkpad.png\",\n  \"inventory_unit\": \"UNIT\",\n  \"presentation\": \"Caja\",\n  \"properties\": {\n    \"volume\": 0.5,\n    \"length\": 30,\n    \"width\": 20,\n    \"large\": 3,\n    \"tall\": 2,\n    \"hight\": 2,\n    \"size\": 15,\n    \"sale_limit_days\": 365,\n    \"weigth\": 1.2,\n    \"is_on_demand\": \"false\"\n  },\n  \"groups\": [\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"category\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": \"ELECTRONICA\",\n      \"group_type\": \"group\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"type\"\n    },\n    {\n      \"group_external_id\": \"A\",\n      \"group_name\": \"A\",\n      \"group_parent_id\": null,\n      \"group_type\": \"classification\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"product_image\": \"https://example.com/img/thinkpad.png\",\n  \"purchase_coin\": \"USD\",\n  \"purchase_price\": 900,\n  \"properties\": {\n    \"volume\": 0.5,\n    \"length\": 30,\n    \"width\": 20,\n    \"large\": 3,\n    \"tall\": 2,\n    \"hight\": 2,\n    \"size\": 15,\n    \"sale_limit_days\": 365,\n    \"weigth\": 1.2,\n    \"is_on_demand\": \"false\"\n  },\n  \"status\": \"ACTIVE\",\n  \"name\": \"Laptop Lenovo Thinkpad\",\n  \"reception_type\": \"GENERAL\",\n  \"presentation\": \"Caja\",\n  \"sale_coin\": \"USD\",\n  \"external_id\": \"PROD-12345\",\n  \"created_by_username\": \"system@technoapes.co\",\n  \"id\": \"817de9763f494b09821c28cf5c931fec\",\n  \"modified_by_username\": \"system@technoapes.co\",\n  \"reference_id\": \"SKU-45678\",\n  \"modified\": \"2025-08-30T15:18:35.784202-05:00\",\n  \"barcode\": \"1234567890123\",\n  \"created\": \"2025-08-27T16:18:36.423564-05:00\",\n  \"barcode_type\": \"EAN\",\n  \"inventory_unit\": \"UNIT\",\n  \"measure_unit\": \"UND\",\n  \"display_name\": \"Thinkpad X1 Carbon Gen 10\",\n  \"substitute_ids\": [],\n  \"groups\": [\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"category\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": \"ELECTRONICA\",\n      \"group_type\": \"group\"\n    },\n    {\n      \"group_external_id\": \"ELECTRONICA\",\n      \"group_name\": \"ELECTRONICA\",\n      \"group_parent_id\": null,\n      \"group_type\": \"type\"\n    },\n    {\n      \"group_external_id\": \"A\",\n      \"group_name\": \"A\",\n      \"group_parent_id\": null,\n      \"group_type\": \"classification\"\n    }\n  ],\n  \"sale_price\": 1200,\n  \"modified_unix_epoch\": 1756585115,\n  \"created_unix_epoch\": 1756329516\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "purchase-orders",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Actualiza una orden de compra existente",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": \"INCOMPLETE\",\n  \"created\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"dock\": \"\",\n  \"source_location_id\": null,\n  \"expected_date\": \"2025-11-15\",\n  \"entry_location_id\": \"0a1bf15366784d2280730d32c375da7d\",\n  \"modified_unix_epoch\": 1756586254,\n  \"created_unix_epoch\": 1756586254,\n  \"external_id\": \"OC-001\",\n  \"created_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"provider\": {\n    \"id\": \"123456789\",\n    \"fullname\": \"proveedor test\"\n  },\n  \"pk\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"id\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"seal\": \"\",\n  \"modified_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"modified\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"assigned_to_usernames\": [],\n  \"entry_location\": {\n    \"id\": \"0a1bf15366784d2280730d32c375da7d\",\n    \"name\": \"BODEGA 1\",\n    \"external_id\": \"1\"\n  },\n  \"receipt_status\": \"INACTIVE\",\n  \"nested_receipt_status\": \"INACTIVE\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/purchase-orders/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"purchase-orders",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "d376aa3537bc4386afc544ad4fc649a9",
+											"description": "ID único de la orden de compra"
+										}
+									]
+								},
+								"description": "Actualiza una orden de compra en el sistema WMS. La orden debe incluir la información que desea actualizar."
+							},
+							"response": [
+								{
+									"name": "respuesta exitosa de actualizacion de orden de compra.",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"status\": \"INCOMPLETE\",\n  \"created\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"dock\": \"\",\n  \"source_location_id\": null,\n  \"expected_date\": \"2025-11-15\",\n  \"entry_location_id\": \"0a1bf15366784d2280730d32c375da7d\",\n  \"modified_unix_epoch\": 1756586254,\n  \"created_unix_epoch\": 1756586254,\n  \"external_id\": \"OC-001\",\n  \"created_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"provider\": {\n    \"id\": \"123456789\",\n    \"fullname\": \"proveedor test\"\n  },\n  \"pk\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"id\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"seal\": \"\",\n  \"modified_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"modified\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"assigned_to_usernames\": [],\n  \"entry_location\": {\n    \"id\": \"0a1bf15366784d2280730d32c375da7d\",\n    \"name\": \"BODEGA 1\",\n    \"external_id\": \"1\"\n  },\n  \"receipt_status\": \"INACTIVE\",\n  \"nested_receipt_status\": \"INACTIVE\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/purchase-orders/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"purchase-orders",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"status\": \"INCOMPLETE\",\n  \"created\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"dock\": \"\",\n  \"source_location_id\": null,\n  \"expected_date\": \"2025-11-15\",\n  \"entry_location_id\": \"0a1bf15366784d2280730d32c375da7d\",\n  \"modified_unix_epoch\": 1756586254,\n  \"created_unix_epoch\": 1756586254,\n  \"external_id\": \"OC-001\",\n  \"created_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"provider\": {\n    \"id\": \"123456789\",\n    \"fullname\": \"proveedor test\"\n  },\n  \"pk\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"id\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"seal\": \"\",\n  \"modified_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"modified\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"assigned_to_usernames\": [],\n  \"entry_location\": {\n    \"id\": \"0a1bf15366784d2280730d32c375da7d\",\n    \"name\": \"BODEGA 1\",\n    \"external_id\": \"1\"\n  },\n  \"receipt_status\": \"INACTIVE\",\n  \"nested_receipt_status\": \"INACTIVE\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Listar ordenes de compra con filtros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/purchase-orders?entry_location_external_id__eq=LOC001&assigned_to_usernames__contains=john.doe&expected_date__gte=2024-01-01&expected_date__lte=2024-12-31&last_evaluated_key_id=eyJpZCI6InBvXzEyMyJ9&provider_external_id__eq=PROV001&status__eq=INCOMPLETE&status__in=CANCELLED,INCOMPLETE",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"purchase-orders"
+							],
+							"query": [
+								{
+									"key": "entry_location_external_id__eq",
+									"value": "LOC001",
+									"description": "Filtra por la ubicación de entrada de la orden de compra."
+								},
+								{
+									"key": "assigned_to_usernames__contains",
+									"value": "john.doe",
+									"description": "Busca órdenes asignadas a un usuario específico."
+								},
+								{
+									"key": "expected_date__gte",
+									"value": "2024-01-01",
+									"description": "Filtra órdenes con fecha esperada mayor o igual a este valor (YYYY-MM-DD)."
+								},
+								{
+									"key": "expected_date__lte",
+									"value": "2024-12-31",
+									"description": "Filtra órdenes con fecha esperada menor o igual a este valor (YYYY-MM-DD)."
+								},
+								{
+									"key": "last_evaluated_key_id",
+									"value": "eyJpZCI6InBvXzEyMyJ9",
+									"description": "Clave de paginación para obtener la siguiente página de resultados."
+								},
+								{
+									"key": "provider_external_id__eq",
+									"value": "PROV001",
+									"description": "Filtra órdenes de compra por el ID externo del proveedor."
+								},
+								{
+									"key": "status__eq",
+									"value": "INCOMPLETE",
+									"description": "Filtra por un estado específico de la orden de compra."
+								},
+								{
+									"key": "status__in",
+									"value": "CANCELLED,INCOMPLETE",
+									"description": "Filtra por múltiples estados (separados por coma)."
+								}
+							]
+						},
+						"description": "Devuelve una lista paginada de ordenes de compra. Soporta filtros por estado, proveedor, ubicación de entrada, fecha esperada, usuario asignado, paginacion."
+					},
+					"response": [
+						{
+							"name": "Lista de ordenes de compra obtenida exitosamente.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/purchase-orders?entry_location_external_id__eq=LOC001&assigned_to_usernames__contains=john.doe&expected_date__gte=2024-01-01&expected_date__lte=2024-12-31&last_evaluated_key_id=eyJpZCI6InBvXzEyMyJ9&provider_external_id__eq=PROV001&status__eq=INCOMPLETE&status__in=CANCELLED,INCOMPLETE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"purchase-orders"
+									],
+									"query": [
+										{
+											"key": "entry_location_external_id__eq",
+											"value": "LOC001",
+											"description": "Filtra por la ubicación de entrada de la orden de compra."
+										},
+										{
+											"key": "assigned_to_usernames__contains",
+											"value": "john.doe",
+											"description": "Busca órdenes asignadas a un usuario específico."
+										},
+										{
+											"key": "expected_date__gte",
+											"value": "2024-01-01",
+											"description": "Filtra órdenes con fecha esperada mayor o igual a este valor (YYYY-MM-DD)."
+										},
+										{
+											"key": "expected_date__lte",
+											"value": "2024-12-31",
+											"description": "Filtra órdenes con fecha esperada menor o igual a este valor (YYYY-MM-DD)."
+										},
+										{
+											"key": "last_evaluated_key_id",
+											"value": "eyJpZCI6InBvXzEyMyJ9",
+											"description": "Clave de paginación para obtener la siguiente página de resultados."
+										},
+										{
+											"key": "provider_external_id__eq",
+											"value": "PROV001",
+											"description": "Filtra órdenes de compra por el ID externo del proveedor."
+										},
+										{
+											"key": "status__eq",
+											"value": "INCOMPLETE",
+											"description": "Filtra por un estado específico de la orden de compra."
+										},
+										{
+											"key": "status__in",
+											"value": "CANCELLED,INCOMPLETE",
+											"description": "Filtra por múltiples estados (separados por coma)."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"results\": [\n    {\n      \"status\": \"INCOMPLETE\",\n      \"created\": \"2025-08-30T15:37:34.568288-05:00\",\n      \"dock\": \"\",\n      \"source_location_id\": null,\n      \"expected_date\": \"2025-07-25\",\n      \"entry_location_id\": \"0a1bf15366784d2280730d32c375da7d\",\n      \"modified_unix_epoch\": 1756586254,\n      \"created_unix_epoch\": 1756586254,\n      \"external_id\": \"OC-RECEPCION\",\n      \"created_by_username\": \"carlos.pacheco@technoapes.co\",\n      \"provider\": {\n        \"id\": \"123456789\",\n        \"fullname\": \"TEST\"\n      },\n      \"pk\": \"d376aa3537bc4386afc544ad4fc649a9\",\n      \"id\": \"d376aa3537bc4386afc544ad4fc649a9\",\n      \"seal\": \"\",\n      \"modified_by_username\": \"carlos.pacheco@technoapes.co\",\n      \"modified\": \"2025-08-30T15:37:34.568288-05:00\",\n      \"assigned_to_usernames\": [],\n      \"entry_location\": {\n        \"id\": \"0a1bf15366784d2280730d32c375da7d\",\n        \"name\": \"BODEGA SQL\",\n        \"external_id\": \"SQL\"\n      },\n      \"receipt_status\": \"INACTIVE\",\n      \"nested_receipt_status\": \"INACTIVE\"\n    }\n  ],\n  \"count\": 1,\n  \"last_evaluated_key\": null,\n  \"warnings\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear una orden de compra",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"external_id\": \"OC-001\",\n  \"entry_location_external_id\": \"LOC-123\",\n  \"expected_date\": \"2025-11-15\",\n  \"provider\": {\n    \"id\": \"123456789\",\n    \"fullname\": \"proveedor test\"\n  },\n  \"lines\": [\n    {\n      \"variant_external_id\": \"VAR-001\",\n      \"amount\": 10,\n      \"details\": [\n        {\n          \"amount\": 10,\n          \"due_date\": \"2025-09-15\",\n          \"batch\": \"BATCH-001\"\n        }\n      ]\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/purchase-orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"purchase-orders"
+							]
+						},
+						"description": "Crea una orden de compra en el sistema WMS."
+					},
+					"response": [
+						{
+							"name": "respuesta exitosa de creacion de orden de compra.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"external_id\": \"OC-001\",\n  \"entry_location_external_id\": \"LOC-123\",\n  \"expected_date\": \"2025-11-15\",\n  \"provider\": {\n    \"id\": \"123456789\",\n    \"fullname\": \"proveedor test\"\n  },\n  \"lines\": [\n    {\n      \"variant_external_id\": \"VAR-001\",\n      \"amount\": 10,\n      \"details\": [\n        {\n          \"amount\": 10,\n          \"due_date\": \"2025-09-15\",\n          \"batch\": \"BATCH-001\"\n        }\n      ]\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/purchase-orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"purchase-orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"INCOMPLETE\",\n  \"created\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"dock\": \"\",\n  \"source_location_id\": null,\n  \"expected_date\": \"2025-11-15\",\n  \"entry_location_id\": \"0a1bf15366784d2280730d32c375da7d\",\n  \"modified_unix_epoch\": 1756586254,\n  \"created_unix_epoch\": 1756586254,\n  \"external_id\": \"OC-001\",\n  \"created_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"provider\": {\n    \"id\": \"123456789\",\n    \"fullname\": \"proveedor test\"\n  },\n  \"pk\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"id\": \"d376aa3537bc4386afc544ad4fc649a9\",\n  \"seal\": \"\",\n  \"modified_by_username\": \"carlos.pacheco@technoapes.co\",\n  \"modified\": \"2025-08-30T15:37:34.568288-05:00\",\n  \"assigned_to_usernames\": [],\n  \"entry_location\": {\n    \"id\": \"0a1bf15366784d2280730d32c375da7d\",\n    \"name\": \"BODEGA 1\",\n    \"external_id\": \"1\"\n  },\n  \"receipt_status\": \"INACTIVE\",\n  \"nested_receipt_status\": \"INACTIVE\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "order-receipts",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Actualiza una orden de recepción existente",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"assigned_to_usernames\": [\n    \"leonardo.zambrano\"\n  ],\n  \"received_amount\": 10,\n  \"rejected_amount\": 0,\n  \"received_lines_amount\": 1,\n  \"status\": \"IN_PROGRESS\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/order-receipts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"order-receipts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "ID único de la orden de recepción"
+										}
+									]
+								},
+								"description": "Actualiza una orden de recepción en el sistema WMS. La orden debe incluir información que desea actualizar."
+							},
+							"response": [
+								{
+									"name": "Respuesta exitosa de actualización de orden de recepción.",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"assigned_to_usernames\": [\n    \"leonardo.zambrano\"\n  ],\n  \"received_amount\": 10,\n  \"rejected_amount\": 0,\n  \"received_lines_amount\": 1,\n  \"status\": \"IN_PROGRESS\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/order-receipts/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"order-receipts",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"related_module\": \"PURCHASE_ORDER\",\n  \"support_document_codes\": [\n    \"Factura-001\"\n  ],\n  \"received_amount\": 5,\n  \"status\": \"CLOSED\",\n  \"created\": \"2025-07-30T15:56:34.090573-05:00\",\n  \"dock\": null,\n  \"expected_date\": null,\n  \"entry_location_id\": \"f2f6b0906bda4e139dac0f148e42077e\",\n  \"modified_unix_epoch\": 1753969494,\n  \"related_pk\": \"f1afbf27d0ca4701a71029d53c90521e\",\n  \"pk_instance\": \"3\",\n  \"created_unix_epoch\": 1753908994,\n  \"update_lines\": true,\n  \"external_id\": null,\n  \"created_by_username\": \"test@tecnhoapes.com\",\n  \"arrival_date\": null,\n  \"received_lines_amount\": 1,\n  \"pk\": \"3\",\n  \"id\": \"3\",\n  \"seal\": null,\n  \"modified_by_username\": \"test@tecnhoapes.com\",\n  \"modified\": \"2025-07-31T08:44:54.989237-05:00\",\n  \"assigned_to_usernames\": [\n    \"leonardo.zambrano\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Listar ordenes de recepcion con filtros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/order-receipts?assigned_to_usernames__contains=john.doe&entry_location_id__eq=LOC001&related_module__eq=PURCHASE_ORDER&related_pk__eq=po_123&status__eq=IN_PROGRESS&status__in=CLOSED,IN_PROGRESS",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order-receipts"
+							],
+							"query": [
+								{
+									"key": "assigned_to_usernames__contains",
+									"value": "john.doe",
+									"description": "Busca órdenes asignadas a un usuario específico."
+								},
+								{
+									"key": "entry_location_id__eq",
+									"value": "LOC001",
+									"description": "Filtra por la ubicación de entrada de la orden de recepción."
+								},
+								{
+									"key": "related_module__eq",
+									"value": "PURCHASE_ORDER",
+									"description": "Filtra por por módulo relacionado."
+								},
+								{
+									"key": "related_pk__eq",
+									"value": "po_123",
+									"description": "Filtra por por clave primaria relacionada."
+								},
+								{
+									"key": "status__eq",
+									"value": "IN_PROGRESS",
+									"description": "Filtra por el estado de la orden de recepción."
+								},
+								{
+									"key": "status__in",
+									"value": "CLOSED,IN_PROGRESS",
+									"description": "Filtra por múltiples estados (separados por coma)."
+								}
+							]
+						},
+						"description": "Devuelve una lista paginada de ordenes de recepcion. Soporta filtros por estado, ubicación de entrada, fecha esperada, usuario asignado, paginacion."
+					},
+					"response": [
+						{
+							"name": "Lista de ordenes de recepción obtenida exitosamente.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/order-receipts?assigned_to_usernames__contains=john.doe&entry_location_id__eq=LOC001&related_module__eq=PURCHASE_ORDER&related_pk__eq=po_123&status__eq=IN_PROGRESS&status__in=CLOSED,IN_PROGRESS",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"order-receipts"
+									],
+									"query": [
+										{
+											"key": "assigned_to_usernames__contains",
+											"value": "john.doe",
+											"description": "Busca órdenes asignadas a un usuario específico."
+										},
+										{
+											"key": "entry_location_id__eq",
+											"value": "LOC001",
+											"description": "Filtra por la ubicación de entrada de la orden de recepción."
+										},
+										{
+											"key": "related_module__eq",
+											"value": "PURCHASE_ORDER",
+											"description": "Filtra por por módulo relacionado."
+										},
+										{
+											"key": "related_pk__eq",
+											"value": "po_123",
+											"description": "Filtra por por clave primaria relacionada."
+										},
+										{
+											"key": "status__eq",
+											"value": "IN_PROGRESS",
+											"description": "Filtra por el estado de la orden de recepción."
+										},
+										{
+											"key": "status__in",
+											"value": "CLOSED,IN_PROGRESS",
+											"description": "Filtra por múltiples estados (separados por coma)."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"results\": [\n    {\n      \"id\": \"2\",\n      \"arrival_date\": null,\n      \"assigned_to_usernames\": [\n        \"leonardo.zambrano\"\n      ],\n      \"created\": \"2025-07-30T09:17:17.064467-05:00\",\n      \"created_by_username\": \"LeonardoZambrano@tecnhoapes.com\",\n      \"created_unix_epoch\": 1753885037,\n      \"dock\": null,\n      \"entry_location_id\": \"f2f6b0906bda4e139dac0f148e42077e\",\n      \"expected_date\": null,\n      \"external_id\": null,\n      \"modified\": \"2025-07-30T15:28:14.994241-05:00\",\n      \"modified_by_username\": \"LeonardoZambrano@tecnhoapes.com\",\n      \"modified_unix_epoch\": 1753907294,\n      \"pk\": \"2\",\n      \"pk_instance\": \"2\",\n      \"received_amount\": 50,\n      \"received_lines_amount\": 5,\n      \"related_module\": \"PURCHASE_ORDER\",\n      \"related_pk\": \"e280a02b6a3b479e8819af8180ee968c\",\n      \"seal\": null,\n      \"status\": \"CLOSED\",\n      \"support_document_codes\": [],\n      \"update_lines\": true\n    }\n  ],\n  \"count\": 1,\n  \"last_evaluated_key\": null,\n  \"warnings\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear una orden de recepción",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"assigned_to_usernames\": [\n    \"alen.palomino\"\n  ],\n  \"entry_location_id\": \"ee6f9ff33c574986b2d436daca8bda89\",\n  \"related_pk\": \"45b7d56435714d08bdd418aec29be4a3\",\n  \"related_module\": \"PURCHASE_ORDER\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order-receipts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order-receipts"
+							]
+						},
+						"description": "Crea orden de recepción en el sistema WMS. la orden de recepción de genera basada en un orden de compra existente."
+					},
+					"response": [
+						{
+							"name": "Respuesta exitosa de creación de orden de recepción.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"assigned_to_usernames\": [\n    \"alen.palomino\"\n  ],\n  \"entry_location_id\": \"ee6f9ff33c574986b2d436daca8bda89\",\n  \"related_pk\": \"45b7d56435714d08bdd418aec29be4a3\",\n  \"related_module\": \"PURCHASE_ORDER\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/order-receipts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"order-receipts"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"entry_location_id\": \"ee6f9ff33c574986b2d436daca8bda89\",\n  \"related_pk\": \"45b7d56435714d08bdd418aec29be4a3\",\n  \"related_module\": \"PURCHASE_ORDER\",\n  \"external_id\": null,\n  \"assigned_to_usernames\": [\n    \"alen.palomino\"\n  ],\n  \"expected_date\": null,\n  \"arrival_date\": null,\n  \"status\": \"CREATED\",\n  \"support_document_codes\": [],\n  \"seal\": null,\n  \"dock\": null,\n  \"received_amount\": 0,\n  \"received_lines_amount\": 0,\n  \"pk\": \"1\",\n  \"id\": \"1\",\n  \"created\": \"2025-07-17T16:50:39.425765-05:00\",\n  \"created_unix_epoch\": 1752789039,\n  \"created_by_username\": \"test@technoapes.co\",\n  \"modified\": \"2025-07-17T16:50:39.425765-05:00\",\n  \"modified_unix_epoch\": 1752789039,\n  \"modified_by_username\": \"test@technoapes.co\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "dispatch-orders",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Actualiza un pedido existente",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"on_enlistment_amount\": 0,\n  \"received_amount\": 20,\n  \"status\": \"ENLISTED\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/dispatch-orders/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dispatch-orders",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "415",
+											"description": "ID único del pedido"
+										}
+									]
+								},
+								"description": "Actualiza un pedido en el sistema WMS. La orden debe incluir información que desea actualizar."
+							},
+							"response": [
+								{
+									"name": "respuesta exitosa de actualizacion de un pedido.",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"on_enlistment_amount\": 0,\n  \"received_amount\": 20,\n  \"status\": \"ENLISTED\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/dispatch-orders/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"dispatch-orders",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"box_consecutive\": 0,\n  \"support_document_codes\": [\n    \"1234567\"\n  ],\n  \"expected_amount\": 0,\n  \"received_amount\": 20,\n  \"properties\": {\n    \"closing_time\": null,\n    \"shipping_city\": \"BOGOTA\",\n    \"shipping_address\": \"calle luna calle sol\",\n    \"recipient_name\": \"PACHECO\",\n    \"send_physical_support_documents\": \"NO\",\n    \"is_express\": false,\n    \"time_zone\": null\n  },\n  \"status\": \"ENLISTED\",\n  \"expected_date\": \"2025-08-21T11:12\",\n  \"vendor\": {\n    \"name\": \"PACHECO\",\n    \"document_number\": \"123456789\",\n    \"document_type\": \"NIT\"\n  },\n  \"source_id\": \"6f35d9dc465e4b05ad6626f93c707ce7\",\n  \"pk_instance\": \"415\",\n  \"sk\": \"#METADATA\",\n  \"external_id\": \"DO-DISPATCH_10\",\n  \"created_by_username\": \"undefined@apes.com\",\n  \"id\": \"415\",\n  \"modified_by_username\": \"ccarlospachecoc@gmail.com\",\n  \"modified\": \"2025-08-21T08:41:01.864761-05:00\",\n  \"automatic_distribution\": true,\n  \"completed_datetime\": null,\n  \"order_type_id\": \"19b159d7ec5f499ba62320ff89fc831b\",\n  \"created\": \"2025-08-21T07:32:21.891202-05:00\",\n  \"priority\": 1,\n  \"destination_id\": null,\n  \"rejected_amount\": 0,\n  \"modified_unix_epoch\": 1755783661,\n  \"on_enlistment_amount\": 0,\n  \"client\": {\n    \"name\": \"PACHECO\",\n    \"document_number\": \"123456789\",\n    \"document_type\": \"NIT\"\n  },\n  \"order_type\": \"SO\",\n  \"created_unix_epoch\": 1755779541,\n  \"pk\": \"415\",\n  \"amount_removed_in_swap_zone\": 0,\n  \"previous_instance\": {\n    \"box_consecutive\": 0,\n    \"support_document_codes\": [\n      \"1234567\"\n    ],\n    \"expected_amount\": 0,\n    \"received_amount\": 0,\n    \"properties\": {\n      \"closing_time\": null,\n      \"shipping_city\": \"BOGOTA\",\n      \"shipping_address\": \"calle luna calle sol\",\n      \"recipient_name\": \"PACHECO\",\n      \"send_physical_support_documents\": \"NO\",\n      \"is_express\": false,\n      \"time_zone\": null\n    },\n    \"status\": \"ON_ENLISTMENT\",\n    \"expected_date\": \"2025-08-21T11:12\",\n    \"vendor\": {\n      \"name\": \"PACHECO\",\n      \"document_number\": \"123456789\",\n      \"document_type\": \"NIT\"\n    },\n    \"source_id\": \"6f35d9dc465e4b05ad6626f93c707ce7\",\n    \"pk_instance\": \"415\",\n    \"sk\": \"#METADATA\",\n    \"external_id\": \"DO-DISPATCH_10\",\n    \"created_by_username\": \"undefined@apes.com\",\n    \"id\": \"415\",\n    \"modified_by_username\": \"null\",\n    \"modified\": \"2025-08-21T07:33:12.932231-05:00\",\n    \"automatic_distribution\": true,\n    \"completed_datetime\": null,\n    \"order_type_id\": \"19b159d7ec5f499ba62320ff89fc831b\",\n    \"created\": \"2025-08-21T07:32:21.891202-05:00\",\n    \"priority\": 1,\n    \"destination_id\": null,\n    \"rejected_amount\": 0,\n    \"modified_unix_epoch\": 1755779592,\n    \"on_enlistment_amount\": 20,\n    \"client\": {\n      \"name\": \"PACHECO\",\n      \"document_number\": \"123456789\",\n      \"document_type\": \"NIT\"\n    },\n    \"order_type\": \"SO\",\n    \"created_unix_epoch\": 1755779541,\n    \"pk\": \"415\",\n    \"amount_removed_in_swap_zone\": 0\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Listar pedidos con filtros",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/dispatch-orders?source_id__eq=LOC001&last_evaluated_key_id=eyJpZCI6InBvXzEyMyJ9&status__eq=INCOMPLETE&status__in=CANCELLED,INCOMPLETE",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"dispatch-orders"
+							],
+							"query": [
+								{
+									"key": "source_id__eq",
+									"value": "LOC001",
+									"description": "Filtra por la ubicación de entrada del pedido."
+								},
+								{
+									"key": "last_evaluated_key_id",
+									"value": "eyJpZCI6InBvXzEyMyJ9",
+									"description": "Clave de paginación para obtener la siguiente página de resultados."
+								},
+								{
+									"key": "status__eq",
+									"value": "INCOMPLETE",
+									"description": "Filtra por un estado específico del pedido."
+								},
+								{
+									"key": "status__in",
+									"value": "CANCELLED,INCOMPLETE",
+									"description": "Filtra por múltiples estados (separados por coma)."
+								}
+							]
+						},
+						"description": "Devuelve una lista paginada de pedidos."
+					},
+					"response": [
+						{
+							"name": "Lista de pedidos obtenida exitosamente.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/dispatch-orders?source_id__eq=LOC001&last_evaluated_key_id=eyJpZCI6InBvXzEyMyJ9&status__eq=INCOMPLETE&status__in=CANCELLED,INCOMPLETE",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dispatch-orders"
+									],
+									"query": [
+										{
+											"key": "source_id__eq",
+											"value": "LOC001",
+											"description": "Filtra por la ubicación de entrada del pedido."
+										},
+										{
+											"key": "last_evaluated_key_id",
+											"value": "eyJpZCI6InBvXzEyMyJ9",
+											"description": "Clave de paginación para obtener la siguiente página de resultados."
+										},
+										{
+											"key": "status__eq",
+											"value": "INCOMPLETE",
+											"description": "Filtra por un estado específico del pedido."
+										},
+										{
+											"key": "status__in",
+											"value": "CANCELLED,INCOMPLETE",
+											"description": "Filtra por múltiples estados (separados por coma)."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"results\": [\n    {\n      \"pk\": \"415\",\n      \"sk\": \"#METADATA\",\n      \"id\": \"415\",\n      \"external_id\": \"DO-DISPATCH_10\",\n      \"expected_date\": \"2025-08-21T11:12\",\n      \"priority\": 1,\n      \"properties\": {\n        \"recipient_name\": \"PACHECO\",\n        \"shipping_address\": \"calle luna calle sol\",\n        \"shipping_city\": \"BOGOTA\",\n        \"send_physical_support_documents\": \"NO\",\n        \"is_express\": false,\n        \"time_zone\": null,\n        \"closing_time\": null\n      },\n      \"client\": {\n        \"name\": \"PACHECO\",\n        \"document_number\": \"123456789\",\n        \"document_type\": \"NIT\"\n      },\n      \"vendor\": {\n        \"name\": \"PACHECO\",\n        \"document_number\": \"123456789\",\n        \"document_type\": \"NIT\"\n      },\n      \"order_type\": \"SO\",\n      \"support_document_codes\": [\n        \"1234567\"\n      ],\n      \"status\": \"INCOMPLETE\",\n      \"on_enlistment_amount\": 0,\n      \"received_amount\": 0,\n      \"completed_datetime\": null,\n      \"automatic_distribution\": true,\n      \"expected_amount\": 0,\n      \"amount_removed_in_swap_zone\": 0,\n      \"rejected_amount\": 0,\n      \"box_consecutive\": 0,\n      \"source_id\": \"6f35d9dc465e4b05ad6626f93c707ce7\",\n      \"destination_id\": null,\n      \"order_type_id\": \"19b159d7ec5f499ba62320ff89fc831b\",\n      \"created\": \"2025-08-21T07:32:21.891202-05:00\",\n      \"created_unix_epoch\": 1755779541,\n      \"modified\": \"2025-08-21T07:32:21.891202-05:00\",\n      \"modified_unix_epoch\": 1755779541,\n      \"created_by_username\": \"undefined@apes.com\",\n      \"modified_by_username\": \"undefined@apes.com\",\n      \"lines_amount\": 1\n    }\n  ],\n  \"count\": 1,\n  \"last_evaluated_key\": null,\n  \"warnings\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Crear un pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"external_id\": \"Pedido-Leo-00008\",\n  \"description\": \"...\",\n  \"source_external_id\": \"01\",\n  \"destination_external_id\": null,\n  \"order_type_external_id\": \"01\",\n  \"expected_date\": \"2025-10-21\",\n  \"lines\": [\n    {\n      \"expected_amount\": 1,\n      \"variant_external_id\": \"2768\"\n    }\n  ],\n  \"priority\": 1,\n  \"properties\": {\n    \"closing_time\": \"09:10:00\",\n    \"route_id\": \"RUTA-007\"\n  }\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/dispatch-orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"dispatch-orders"
+							]
+						},
+						"description": "Crea un pedido en el sistema WMS."
+					},
+					"response": [
+						{
+							"name": "respuesta exitosa de creacion del pedido.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"external_id\": \"Pedido-Leo-00008\",\n  \"description\": \"...\",\n  \"source_external_id\": \"01\",\n  \"destination_external_id\": null,\n  \"order_type_external_id\": \"01\",\n  \"expected_date\": \"2025-10-21\",\n  \"lines\": [\n    {\n      \"expected_amount\": 1,\n      \"variant_external_id\": \"2768\"\n    }\n  ],\n  \"priority\": 1,\n  \"properties\": {\n    \"closing_time\": \"09:10:00\",\n    \"route_id\": \"RUTA-007\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/dispatch-orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dispatch-orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"pk\": \"415\",\n  \"sk\": \"#METADATA\",\n  \"id\": \"415\",\n  \"external_id\": \"DO-DISPATCH_10\",\n  \"expected_date\": \"2025-08-21T11:12\",\n  \"priority\": 1,\n  \"properties\": {\n    \"recipient_name\": \"PACHECO\",\n    \"shipping_address\": \"calle luna calle sol\",\n    \"shipping_city\": \"BOGOTA\",\n    \"send_physical_support_documents\": \"NO\",\n    \"is_express\": false,\n    \"time_zone\": null,\n    \"closing_time\": null\n  },\n  \"client\": {\n    \"name\": \"PACHECO\",\n    \"document_number\": \"123456789\",\n    \"document_type\": \"NIT\"\n  },\n  \"vendor\": {\n    \"name\": \"PACHECO\",\n    \"document_number\": \"123456789\",\n    \"document_type\": \"NIT\"\n  },\n  \"order_type\": \"01\",\n  \"support_document_codes\": [\n    \"1234567\"\n  ],\n  \"status\": \"INCOMPLETE\",\n  \"on_enlistment_amount\": 0,\n  \"received_amount\": 0,\n  \"completed_datetime\": null,\n  \"automatic_distribution\": true,\n  \"expected_amount\": 0,\n  \"amount_removed_in_swap_zone\": 0,\n  \"rejected_amount\": 0,\n  \"box_consecutive\": 0,\n  \"source_id\": \"6f35d9dc465e4b05ad6626f93c707ce7\",\n  \"destination_id\": null,\n  \"order_type_id\": \"19b159d7ec5f499ba62320ff89fc831b\",\n  \"created\": \"2025-08-21T07:32:21.891202-05:00\",\n  \"created_unix_epoch\": 1755779541,\n  \"modified\": \"2025-08-21T07:32:21.891202-05:00\",\n  \"modified_unix_epoch\": 1755779541,\n  \"created_by_username\": \"undefined@apes.com\",\n  \"modified_by_username\": \"undefined@apes.com\",\n  \"lines_amount\": 1\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "basePath",
+			"value": "staging"
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://lbh1n2whxl.execute-api.us-east-1.amazonaws.com/staging"
+		}
+	]
+}

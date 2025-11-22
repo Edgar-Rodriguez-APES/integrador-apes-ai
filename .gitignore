@@ -1,0 +1,119 @@
+# ============================================
+# .gitignore para Integrador APES AI
+# ============================================
+
+# ===== DOCUMENTOS TEMPORALES Y DE TRABAJO =====
+# Documentos de status y reportes temporales
+*STATUS*.md
+*RESUMEN*.md
+*REPORTE*.md
+*TRABAJO*.md
+*VERIFICACION*.md
+*CORRECCIONES*.md
+*FASE*.md
+*PHASE*.md
+*COMPLETADO*.md
+*COMPLETED*.md
+*DASHBOARD*.md
+*PROXIMOS*.md
+
+# Archivos de guías y tutoriales temporales
+GUIA-*.md
+PASOS-*.md
+EJECUTA-*.txt
+FELICIDADES-*.md
+POR-QUE-*.md
+
+# ===== PYTHON =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.log
+
+# ===== TESTS =====
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# ===== AWS =====
+.aws/
+*.pem
+*.key
+cdk.out/
+.cdk.staging/
+
+# ===== NODE =====
+node_modules/
+.npm/
+package-lock.json
+yarn.lock
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ===== SECRETS =====
+.env
+.env.local
+.env.*.local
+secrets.json
+credentials.json
+*secret*
+*password*
+*token*
+
+# ===== ARCHIVOS TEMPORALES =====
+*.tmp
+*.temp
+*.bak
+*.backup
+~*
+
+# ===== DOCUMENTOS WORD/EXCEL/OFFICE =====
+# Archivos de Office completos
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.pptx
+*.ppt
+
+# Archivos temporales de Office
+~$*.docx
+~$*.xlsx
+
+# Otros archivos a excluir
+*.lnk
+*.zip
+*.txt
+
+# ===== LOGS =====
+*.log
+logs/
+*.log.*
+
+# ===== ARCHIVOS ESPECÍFICOS DEL PROYECTO =====
+# Documentos de code review temporales
+CODE-REVIEW-*.md
+SECURITY-FIXES-*.md
+PRIORITY-FIXES.md
+AMAZON-Q-*.md
+
+# Scripts de verificación temporales
+verify-*.py
