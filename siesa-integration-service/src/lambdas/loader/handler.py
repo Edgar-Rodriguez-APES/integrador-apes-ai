@@ -13,6 +13,10 @@ from botocore.exceptions import ClientError
 from adapters import AdapterFactory
 
 # Import security utilities
+import sys
+import os
+# Add parent directory to path to import common module
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from common.input_validation import sanitize_dict, sanitize_log_message, sanitize_dynamodb_key
 from common.logging_utils import get_safe_logger
 

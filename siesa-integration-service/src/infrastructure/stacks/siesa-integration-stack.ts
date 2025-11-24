@@ -5,6 +5,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 
@@ -304,23 +305,82 @@ export class SiesaIntegrationStack extends cdk.Stack {
     }));
 
     // ===========================================
-    // 6. CloudWatch Log Groups
+    // 6. KMS Key for CloudWatch Logs Encryption
     // ===========================================
     
-    const lambdaLogGroup = new logs.LogGroup(this, 'LambdaLogGroup', {
-      logGroupName: `/aws/lambda/siesa-integration-${environment}`,
+    const logsKmsKey = new kms.Key(this, 'LogsKmsKey', {
+      alias: `siesa-integration-logs-${environment}`,
+      description: 'KMS key for encrypting CloudWatch Logs',
+      enableKeyRotation: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN
+    });
+
+    // Grant CloudWatch Logs permission to use the key
+    logsKmsKey.addToResourcePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      principals: [new iam.ServicePrincipal(`logs.${this.region}.amazonaws.com`)],
+      actions: [
+        'kms:Encrypt',
+        'kms:Decrypt',
+        'kms:ReEncrypt*',
+        'kms:GenerateDataKey*',
+        'kms:CreateGrant',
+        'kms:DescribeKey'
+      ],
+      resources: ['*'],
+      conditions: {
+        ArnLike: {
+          'kms:EncryptionContext:aws:logs:arn': `arn:aws:logs:${this.region}:${this.account}:log-group:/aws/lambda/siesa-integration-*`
+        }
+      }
+    }));
+
+    // ===========================================
+    // 7. CloudWatch Log Groups (Per Lambda Function)
+    // ===========================================
+    
+    // Extractor Lambda Log Group
+    const extractorLogGroup = new logs.LogGroup(this, 'ExtractorLogGroup', {
+      logGroupName: `/aws/lambda/siesa-integration-extractor-${environment}`,
       retention: environment === 'prod' ? logs.RetentionDays.ONE_MONTH : logs.RetentionDays.ONE_WEEK,
+      encryptionKey: logsKmsKey,
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    const stepFunctionsLogGroup = new logs.LogGroup(this, 'StepFunctionsLogGroup', {
-      logGroupName: `/aws/stepfunctions/siesa-integration-${environment}`,
+    // Transformer Lambda Log Group
+    const transformerLogGroup = new logs.LogGroup(this, 'TransformerLogGroup', {
+      logGroupName: `/aws/lambda/siesa-integration-transformer-${environment}`,
       retention: environment === 'prod' ? logs.RetentionDays.ONE_MONTH : logs.RetentionDays.ONE_WEEK,
+      encryptionKey: logsKmsKey,
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    });
+
+    // Loader Lambda Log Group
+    const loaderLogGroup = new logs.LogGroup(this, 'LoaderLogGroup', {
+      logGroupName: `/aws/lambda/siesa-integration-loader-${environment}`,
+      retention: environment === 'prod' ? logs.RetentionDays.ONE_MONTH : logs.RetentionDays.ONE_WEEK,
+      encryptionKey: logsKmsKey,
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    });
+
+    // Step Functions Log Group
+    const stepFunctionsLogGroup = new logs.LogGroup(this, 'StepFunctionsLogGroup', {
+      logGroupName: `/aws/stepfunctions/siesa-integration-workflow-${environment}`,
+      retention: environment === 'prod' ? logs.RetentionDays.ONE_MONTH : logs.RetentionDays.ONE_WEEK,
+      encryptionKey: logsKmsKey,
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    });
+
+    // API Gateway Log Group (for future use)
+    const apiGatewayLogGroup = new logs.LogGroup(this, 'ApiGatewayLogGroup', {
+      logGroupName: `/aws/apigateway/siesa-integration-${environment}`,
+      retention: environment === 'prod' ? logs.RetentionDays.ONE_MONTH : logs.RetentionDays.ONE_WEEK,
+      encryptionKey: logsKmsKey,
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
     // ===========================================
-    // 7. Stack Outputs
+    // 8. Stack Outputs
     // ===========================================
     
     new cdk.CfnOutput(this, 'ConfigTableName', {
@@ -371,8 +431,32 @@ export class SiesaIntegrationStack extends cdk.Stack {
       exportName: `SiesaIntegration-EventBridgeRole-${environment}`
     });
 
+    new cdk.CfnOutput(this, 'LogsKmsKeyArn', {
+      value: logsKmsKey.keyArn,
+      description: 'KMS key ARN for CloudWatch Logs encryption',
+      exportName: `SiesaIntegration-LogsKmsKey-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'ExtractorLogGroupName', {
+      value: extractorLogGroup.logGroupName,
+      description: 'Extractor Lambda log group name',
+      exportName: `SiesaIntegration-ExtractorLogGroup-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'TransformerLogGroupName', {
+      value: transformerLogGroup.logGroupName,
+      description: 'Transformer Lambda log group name',
+      exportName: `SiesaIntegration-TransformerLogGroup-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'LoaderLogGroupName', {
+      value: loaderLogGroup.logGroupName,
+      description: 'Loader Lambda log group name',
+      exportName: `SiesaIntegration-LoaderLogGroup-${environment}`
+    });
+
     // ===========================================
-    // 8. Tags
+    // 9. Tags
     // ===========================================
     
     cdk.Tags.of(this).add('Project', 'SiesaIntegration');

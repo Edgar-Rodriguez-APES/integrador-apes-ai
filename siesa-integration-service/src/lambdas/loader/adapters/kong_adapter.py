@@ -3,14 +3,20 @@ Kong (RFID) Product Adapter
 Handles integration with Kong RFID backend
 """
 
-import logging
+import sys
+import os
 from typing import Dict, List, Any, Tuple
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from .base_adapter import ProductAdapter
 
-logger = logging.getLogger(__name__)
+# Add parent directory to path to import common module
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+from common.logging_utils import get_safe_logger
+from common.input_validation import sanitize_log_message
+
+logger = get_safe_logger(__name__)
 
 
 class KongAPIClient:
@@ -60,7 +66,7 @@ class KongAPIClient:
             return True
             
         except Exception as e:
-            logger.error(f"Failed to authenticate with Kong API: {str(e)}")
+            logger.error(f"Failed to authenticate with Kong API: {sanitize_log_message(str(e))}")
             raise
     
     def create_or_update_skus(self, skus: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -96,13 +102,13 @@ class KongAPIClient:
             }
             
         except requests.exceptions.HTTPError as e:
-            logger.error(f"Kong API HTTP error: {e.response.status_code} - {e.response.text}")
+            logger.error(f"Kong API HTTP error: {e.response.status_code} - {sanitize_log_message(e.response.text)}")
             
             # Try to parse error response
             try:
                 error_data = e.response.json()
             except:
-                error_data = {'error': e.response.text}
+                error_data = {'error': sanitize_log_message(e.response.text)}
             
             return {
                 'success': False,
@@ -113,13 +119,13 @@ class KongAPIClient:
             }
             
         except Exception as e:
-            logger.error(f"Kong API error: {str(e)}")
+            logger.error(f"Kong API error: {sanitize_log_message(str(e))}")
             return {
                 'success': False,
                 'records_processed': len(skus),
                 'records_success': 0,
                 'records_failed': len(skus),
-                'error': str(e)
+                'error': sanitize_log_message(str(e))
             }
 
 

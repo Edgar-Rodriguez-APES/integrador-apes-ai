@@ -3,12 +3,17 @@ Adapter Factory
 Creates appropriate adapter based on product type
 """
 
-import logging
+import sys
+import os
 from typing import Dict, Any
 from .base_adapter import ProductAdapter
 from .kong_adapter import KongAdapter
 
-logger = logging.getLogger(__name__)
+# Add parent directory to path to import common module
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+from common.logging_utils import get_safe_logger
+
+logger = get_safe_logger(__name__)
 
 
 class AdapterFactory:

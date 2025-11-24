@@ -5,9 +5,15 @@ Abstract base class for all product adapters
 
 from abc import ABC, abstractmethod
 from typing import Dict, List, Any, Tuple
-import logging
+import sys
+import os
 
-logger = logging.getLogger(__name__)
+# Add parent directory to path to import common module
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+from common.logging_utils import get_safe_logger
+from common.input_validation import sanitize_log_message
+
+logger = get_safe_logger(__name__)
 
 
 class ProductAdapter(ABC):
@@ -102,7 +108,7 @@ class ProductAdapter(ABC):
                     'product_id': product.get('id') or product.get('external_id'),
                     'error': error_msg
                 })
-                logger.warning(f"Product {i} validation failed: {error_msg}")
+                logger.warning(f"Product {i} validation failed: {sanitize_log_message(error_msg)}")
         
         # Process in batches
         total_processed = 0
@@ -135,14 +141,14 @@ class ProductAdapter(ABC):
                 logger.info(f"Batch {batch_num}: Processed {batch_processed}, Success {batch_success}, Failed {batch_failed}")
                 
             except Exception as e:
-                logger.error(f"Batch {batch_num} failed: {str(e)}")
+                logger.error(f"Batch {batch_num} failed: {sanitize_log_message(str(e))}")
                 total_failed += len(batch)
                 batch_results.append({
                     'batch_number': batch_num,
                     'processed': len(batch),
                     'success': 0,
                     'failed': len(batch),
-                    'error': str(e)
+                    'error': sanitize_log_message(str(e))
                 })
         
         return {
