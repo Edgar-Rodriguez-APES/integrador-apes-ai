@@ -19,6 +19,8 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from common.input_validation import sanitize_dict, sanitize_log_message, sanitize_dynamodb_key
 from common.logging_utils import get_safe_logger
+from common.metrics import get_metrics_publisher
+import time
 
 # Configure logging
 logger = get_safe_logger(__name__)
@@ -157,6 +159,11 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     Returns:
         Dict with loading results and summary
     """
+    metrics = get_metrics_publisher()
+    start_time = time.time()
+    client_id = None
+    product_type = None
+    
     try:
         # Sanitize input event
         event = sanitize_dict(event)
@@ -265,12 +272,29 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'duration_seconds': int(duration_seconds)
         }
         
+        # Publish success metrics
+        duration = time.time() - start_time
+        metrics.put_sync_duration(client_id, duration)
+        metrics.put_records_processed(client_id, results['total_success'], True)
+        if results['total_failed'] > 0:
+            metrics.put_records_processed(client_id, results['total_failed'], False)
+        metrics.put_api_call_duration(client_id, product_type, duration)
+        
         logger.info(f"Load completed. Status: {status}, Success: {results['total_success']}, Failed: {results['total_failed']}, Duration: {duration_seconds}s")
         
         return response
         
     except Exception as e:
         logger.error(f"Load failed: {sanitize_log_message(str(e))}", exc_info=True)
+        
+        # Publish failure metrics
+        if client_id:
+            duration = time.time() - start_time
+            metrics.put_sync_duration(client_id, duration)
+            metrics.put_records_processed(client_id, 0, False)
+            metrics.put_error_count(client_id, type(e).__name__)
+            if product_type:
+                metrics.put_api_call_duration(client_id, product_type, duration)
         
         # Generate sync_id for error tracking
         sync_id = f"sync-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"

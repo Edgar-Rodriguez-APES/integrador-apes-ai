@@ -16,6 +16,8 @@ from common.input_validation import sanitize_dict, sanitize_log_message, sanitiz
 from common.logging_utils import get_safe_logger
 # SECURITY FIX: Import safe evaluation functions from safe_eval module
 from common.safe_eval import apply_transformation_logic, evaluate_condition
+from common.metrics import get_metrics_publisher
+import time
 
 # Configure logging
 logger = get_safe_logger(__name__)
@@ -281,6 +283,10 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     Returns:
         Dict with transformed products in canonical model
     """
+    metrics = get_metrics_publisher()
+    start_time = time.time()
+    client_id = None
+    
     try:
         # Sanitize input event
         event = sanitize_dict(event)
@@ -364,12 +370,26 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'validation_errors': all_validation_errors[:10]  # Limit to 10 for response size
         }
         
-        logger.info(f"Transformation completed. Canonical products: {len(canonical_products)}, Errors: {len(all_validation_errors)}")
+        # Publish success metrics
+        duration = time.time() - start_time
+        metrics.put_sync_duration(client_id, duration)
+        metrics.put_records_processed(client_id, len(canonical_products), True)
+        if all_validation_errors:
+            metrics.put_validation_errors(client_id, len(all_validation_errors))
+        
+        logger.info(f"Transformation completed. Canonical products: {len(canonical_products)}, Errors: {len(all_validation_errors)}, Duration: {duration:.2f}s")
         
         return response
         
     except Exception as e:
         logger.error(f"Transformation failed: {sanitize_log_message(str(e))}", exc_info=True)
+        
+        # Publish failure metrics
+        if client_id:
+            duration = time.time() - start_time
+            metrics.put_sync_duration(client_id, duration)
+            metrics.put_records_processed(client_id, 0, False)
+            metrics.put_error_count(client_id, type(e).__name__)
         
         # Re-raise the exception so Step Functions can catch it
         raise Exception(f"Transformer Lambda failed: {sanitize_log_message(str(e))}")

@@ -6,6 +6,7 @@ Extracts product data from Siesa ERP API
 import json
 import os
 import logging
+import time
 from datetime import datetime, timezone
 from typing import Dict, List, Any, Optional
 import boto3
@@ -20,6 +21,10 @@ from common.input_validation import (
     sanitize_filter_expression, validate_product_data
 )
 from common.logging_utils import get_safe_logger
+from common.circuit_breaker import circuit_breaker
+from common.rate_limiter import rate_limit
+from common.metrics import get_metrics_publisher
+import time
 
 # Configure logging
 logger = get_safe_logger(__name__)
@@ -59,6 +64,8 @@ class SiesaAPIClient:
         
         return session
     
+    @circuit_breaker(failure_threshold=5, recovery_timeout=60)
+    @rate_limit(calls=100, period=60)
     def authenticate(self) -> bool:
         """Authenticate with Siesa API with improved validation"""
         try:
@@ -108,6 +115,8 @@ class SiesaAPIClient:
             logger.error(f"Unexpected authentication error: {sanitize_log_message(str(e))}")
             raise
     
+    @circuit_breaker(failure_threshold=3, recovery_timeout=30)
+    @rate_limit(calls=100, period=60)
     def get_products(self, page: int = 1, page_size: int = 100, modified_since: Optional[str] = None) -> Dict[str, Any]:
         """
         Get products from Siesa API with pagination and security improvements
@@ -330,6 +339,10 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     Returns:
         Dict with extracted products and metadata
     """
+    metrics = get_metrics_publisher()
+    start_time = time.time()
+    client_id = None
+    
     try:
         # Sanitize input event
         event = sanitize_dict(event)
@@ -373,7 +386,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         extraction_timestamp = datetime.now(timezone.utc).isoformat()
         product_type = config.get('productType', 'kong')
         
-        response = {
+        response_data = {
             'client_id': client_id,
             'product_type': product_type,
             'products': products,
@@ -382,12 +395,52 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'extraction_timestamp': extraction_timestamp
         }
         
-        logger.info(f"Extraction completed successfully. Products: {len(products)}")
+        # Publish success metrics
+        duration = time.time() - start_time
+        metrics.put_sync_duration(client_id, duration)
+        metrics.put_records_processed(client_id, len(products), True)
+        metrics.put_api_call_duration(client_id, 'Siesa', duration)
         
-        return response
+        logger.info(f"Extraction completed successfully. Products: {len(products)}, Duration: {duration:.2f}s")
+        
+        return {
+            'statusCode': 200,
+            'body': json.dumps(response_data)
+        }
+        
+    except ValueError as e:
+        # Handle validation errors (missing parameters, invalid config)
+        logger.error(f"Validation error: {sanitize_log_message(str(e))}")
+        
+        # Publish failure metrics
+        if client_id:
+            duration = time.time() - start_time
+            metrics.put_sync_duration(client_id, duration)
+            metrics.put_records_processed(client_id, 0, False)
+            metrics.put_error_count(client_id, 'ValidationError')
+        
+        return {
+            'statusCode': 400,
+            'body': json.dumps({
+                'error': 'ValidationError',
+                'message': str(e)
+            })
+        }
         
     except Exception as e:
         logger.error(f"Extraction failed: {sanitize_log_message(str(e))}", exc_info=True)
         
-        # Re-raise the exception so Step Functions can catch it
-        raise Exception(f"Extractor Lambda failed: {sanitize_log_message(str(e))}")
+        # Publish failure metrics
+        if client_id:
+            duration = time.time() - start_time
+            metrics.put_sync_duration(client_id, duration)
+            metrics.put_records_processed(client_id, 0, False)
+            metrics.put_error_count(client_id, type(e).__name__)
+        
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'error': type(e).__name__,
+                'message': str(e)
+            })
+        }

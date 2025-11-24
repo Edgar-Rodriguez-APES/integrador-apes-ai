@@ -15,6 +15,8 @@ from .base_adapter import ProductAdapter
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 from common.logging_utils import get_safe_logger
 from common.input_validation import sanitize_log_message
+from common.circuit_breaker import circuit_breaker
+from common.rate_limiter import rate_limit
 
 logger = get_safe_logger(__name__)
 
@@ -46,6 +48,8 @@ class KongAPIClient:
         
         return session
     
+    @circuit_breaker(failure_threshold=5, recovery_timeout=60)
+    @rate_limit(calls=100, period=60)
     def authenticate(self) -> bool:
         """Authenticate with Kong API (Djoser token-based)"""
         try:
@@ -69,6 +73,8 @@ class KongAPIClient:
             logger.error(f"Failed to authenticate with Kong API: {sanitize_log_message(str(e))}")
             raise
     
+    @circuit_breaker(failure_threshold=3, recovery_timeout=30)
+    @rate_limit(calls=50, period=60)
     def create_or_update_skus(self, skus: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
         Create or update SKUs in Kong (upsert operation)

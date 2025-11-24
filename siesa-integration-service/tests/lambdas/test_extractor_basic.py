@@ -22,7 +22,7 @@ class TestExtractorBasic:
         
         # Mock event
         event = {
-            'tenant_id': 'test-tenant',
+            'client_id': 'test-tenant',
             'sync_type': 'products',
             'execution_id': 'exec-123'
         }

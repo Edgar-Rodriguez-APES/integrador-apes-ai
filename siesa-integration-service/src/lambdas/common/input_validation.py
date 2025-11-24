@@ -482,3 +482,110 @@ def validate_url(url: str, allowed_schemes: Optional[List[str]] = None) -> str:
             raise ValidationError("Potential XSS in URL")
     
     return url
+
+
+def sanitize_dynamodb_key(key: str, max_length: int = 255) -> str:
+    """
+    Sanitize DynamoDB key to prevent NoSQL injection
+    
+    Args:
+        key: Key to sanitize
+        max_length: Maximum allowed length
+    
+    Returns:
+        Sanitized key
+    
+    Raises:
+        ValueError: If key is invalid
+    """
+    if not isinstance(key, str):
+        raise ValueError("Key must be a string")
+    
+    # Remove special characters that could cause issues
+    sanitized = re.sub(r'[^\w\-._]', '', key)
+    
+    # Limit length
+    if len(sanitized) > max_length:
+        sanitized = sanitized[:max_length]
+    
+    if not sanitized:
+        raise ValueError("Key cannot be empty after sanitization")
+    
+    return sanitized
+
+
+def sanitize_filter_expression(expression: str, max_length: int = 500) -> str:
+    """
+    Sanitize DynamoDB filter expression to prevent injection
+    
+    Args:
+        expression: Filter expression to sanitize
+        max_length: Maximum allowed length
+    
+    Returns:
+        Sanitized expression
+    
+    Raises:
+        ValueError: If expression is invalid
+    """
+    if not isinstance(expression, str):
+        raise ValueError("Expression must be a string")
+    
+    # Remove potentially dangerous patterns
+    dangerous_patterns = [
+        r'\bdrop\b', r'\bdelete\b', r'\binsert\b', r'\bupdate\b',
+        r'\bexec\b', r'\beval\b', r'\bscript\b', r'<script',
+        r'javascript:', r'vbscript:', r'onload=', r'onerror='
+    ]
+    
+    sanitized = expression
+    for pattern in dangerous_patterns:
+        sanitized = re.sub(pattern, '', sanitized, flags=re.IGNORECASE)
+    
+    # Limit length
+    if len(sanitized) > max_length:
+        sanitized = sanitized[:max_length]
+    
+    return sanitized.strip()
+
+
+
+def validate_product_data(product_data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Validate product data structure and content with security improvements
+    
+    Args:
+        product_data: Product data dictionary
+    
+    Returns:
+        Validated and sanitized product data
+    
+    Raises:
+        ValueError: If validation fails
+    """
+    if not isinstance(product_data, dict):
+        raise ValueError("Product data must be a dictionary")
+    
+    # Sanitize the entire dictionary
+    sanitized_data = sanitize_dict(product_data)
+    
+    # Required fields validation
+    required_fields = ['f_codigo', 'f_nombre']
+    for field in required_fields:
+        if field not in sanitized_data or not sanitized_data[field]:
+            raise ValueError(f"Missing required field: {field}")
+    
+    # Validate field lengths and formats
+    if len(sanitized_data.get('f_codigo', '')) > 50:
+        raise ValueError("Product code too long (max 50 characters)")
+    
+    if len(sanitized_data.get('f_nombre', '')) > 200:
+        raise ValueError("Product name too long (max 200 characters)")
+    
+    # Validate EAN if present
+    if 'f_ean' in sanitized_data and sanitized_data['f_ean']:
+        ean = str(sanitized_data['f_ean']).strip()
+        if not ean.isdigit() or len(ean) not in [8, 13]:
+            raise ValueError("Invalid EAN format (must be 8 or 13 digits)")
+    
+    return sanitized_data
