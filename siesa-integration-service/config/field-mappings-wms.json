@@ -1,0 +1,279 @@
+{
+  "version": "1.0",
+  "product_type": "wms",
+  "description": "Field mappings for WMS (Warehouse Management System) product integration",
+  "last_updated": "2025-01-15T00:00:00Z",
+  "mappings": {
+    "product": {
+      "id": {
+        "siesa_field": "f_codigo",
+        "product_field": "item_id",
+        "type": "string",
+        "required": true,
+        "description": "Unique item identifier"
+      },
+      "external_id": {
+        "siesa_field": "f_codigo_externo",
+        "product_field": "external_item_code",
+        "type": "string",
+        "required": true,
+        "description": "External item code from Siesa"
+      },
+      "name": {
+        "siesa_field": "f_nombre",
+        "product_field": "item_name",
+        "type": "string",
+        "required": true,
+        "description": "Item name"
+      },
+      "display_name": {
+        "siesa_field": "f_nombre_comercial",
+        "product_field": "display_name",
+        "type": "string",
+        "required": false,
+        "description": "Commercial display name"
+      },
+      "ean": {
+        "siesa_field": "f_ean",
+        "product_field": "ean_code",
+        "type": "string",
+        "required": false,
+        "validation": "^[0-9]{13}$",
+        "description": "EAN-13 code"
+      },
+      "sku": {
+        "siesa_field": "f_sku",
+        "product_field": "sku",
+        "type": "string",
+        "required": true,
+        "description": "Stock keeping unit"
+      },
+      "category": {
+        "siesa_field": "f_categoria",
+        "product_field": "category",
+        "type": "string",
+        "required": false,
+        "description": "Item category"
+      },
+      "stock_quantity": {
+        "siesa_field": "f_cantidad",
+        "product_field": "available_quantity",
+        "type": "integer",
+        "required": true,
+        "description": "Available quantity in warehouse"
+      },
+      "warehouse_location": {
+        "siesa_field": "f_ubicacion",
+        "product_field": "location_code",
+        "type": "string",
+        "required": true,
+        "description": "Warehouse location code (REQUIRED for WMS)"
+      },
+      "warehouse_zone": {
+        "siesa_field": "f_zona",
+        "product_field": "zone_id",
+        "type": "string",
+        "required": false,
+        "description": "Warehouse zone identifier"
+      },
+      "warehouse_aisle": {
+        "siesa_field": "f_pasillo",
+        "product_field": "aisle",
+        "type": "string",
+        "required": false,
+        "description": "Warehouse aisle"
+      },
+      "warehouse_rack": {
+        "siesa_field": "f_estante",
+        "product_field": "rack",
+        "type": "string",
+        "required": false,
+        "description": "Warehouse rack"
+      },
+      "warehouse_level": {
+        "siesa_field": "f_nivel",
+        "product_field": "level",
+        "type": "string",
+        "required": false,
+        "description": "Warehouse level/shelf"
+      },
+      "unit_price": {
+        "siesa_field": "f_precio_unitario",
+        "product_field": "unit_cost",
+        "type": "decimal",
+        "required": false,
+        "description": "Unit cost in local currency"
+      },
+      "weight": {
+        "siesa_field": "f_peso",
+        "product_field": "weight_kg",
+        "type": "decimal",
+        "required": false,
+        "description": "Item weight in kilograms"
+      },
+      "volume": {
+        "siesa_field": "f_volumen",
+        "product_field": "volume_m3",
+        "type": "decimal",
+        "required": false,
+        "description": "Item volume in cubic meters"
+      },
+      "dimensions_length": {
+        "siesa_field": "f_largo",
+        "product_field": "length_cm",
+        "type": "decimal",
+        "required": false,
+        "description": "Length in centimeters"
+      },
+      "dimensions_width": {
+        "siesa_field": "f_ancho",
+        "product_field": "width_cm",
+        "type": "decimal",
+        "required": false,
+        "description": "Width in centimeters"
+      },
+      "dimensions_height": {
+        "siesa_field": "f_alto",
+        "product_field": "height_cm",
+        "type": "decimal",
+        "required": false,
+        "description": "Height in centimeters"
+      },
+      "min_stock_level": {
+        "siesa_field": "f_stock_minimo",
+        "product_field": "min_stock",
+        "type": "integer",
+        "required": false,
+        "description": "Minimum stock level for reorder"
+      },
+      "max_stock_level": {
+        "siesa_field": "f_stock_maximo",
+        "product_field": "max_stock",
+        "type": "integer",
+        "required": false,
+        "description": "Maximum stock level"
+      },
+      "reorder_point": {
+        "siesa_field": "f_punto_reorden",
+        "product_field": "reorder_point",
+        "type": "integer",
+        "required": false,
+        "description": "Reorder point quantity"
+      },
+      "lot_number": {
+        "siesa_field": "f_lote",
+        "product_field": "lot_number",
+        "type": "string",
+        "required": false,
+        "description": "Lot/batch number"
+      },
+      "expiration_date": {
+        "siesa_field": "f_fecha_vencimiento",
+        "product_field": "expiration_date",
+        "type": "date",
+        "required": false,
+        "description": "Product expiration date"
+      },
+      "status": {
+        "siesa_field": "f_estado",
+        "product_field": "status",
+        "type": "string",
+        "required": false,
+        "default": "available",
+        "description": "Item status (available/reserved/damaged)"
+      }
+    }
+  },
+  "transformations": {
+    "date_format": {
+      "from": "YYYY-MM-DD",
+      "to": "ISO8601",
+      "description": "Convert Siesa date format to ISO8601"
+    },
+    "location_format": {
+      "from": "A-01-05",
+      "to": "A0105",
+      "description": "Convert location format from hyphenated to compact",
+      "pattern": "^([A-Z])-([0-9]{2})-([0-9]{2})$",
+      "replacement": "$1$2$3"
+    },
+    "decimal_separator": {
+      "from": ",",
+      "to": ".",
+      "description": "Convert decimal separator from comma to dot"
+    },
+    "boolean_conversion": {
+      "true_values": ["S", "SI", "1", "true"],
+      "false_values": ["N", "NO", "0", "false"],
+      "description": "Convert Siesa boolean values to standard boolean"
+    }
+  },
+  "validation_rules": {
+    "ean_code": {
+      "pattern": "^[0-9]{13}$",
+      "message": "EAN must be exactly 13 digits"
+    },
+    "available_quantity": {
+      "min": 0,
+      "message": "Quantity cannot be negative"
+    },
+    "location_code": {
+      "pattern": "^[A-Z][0-9]{4}$",
+      "message": "Location code must be in format: A0105 (1 letter + 4 digits)",
+      "required": true
+    },
+    "unit_cost": {
+      "min": 0,
+      "message": "Unit cost cannot be negative"
+    },
+    "weight_kg": {
+      "min": 0,
+      "max": 10000,
+      "message": "Weight must be between 0 and 10000 kg"
+    },
+    "volume_m3": {
+      "min": 0,
+      "max": 1000,
+      "message": "Volume must be between 0 and 1000 m³"
+    }
+  },
+  "default_values": {
+    "status": "available",
+    "category": "general",
+    "available_quantity": 0,
+    "min_stock": 0,
+    "max_stock": 9999
+  },
+  "custom_fields": {
+    "prefix": "custom:",
+    "description": "Custom fields from Siesa that don't map to standard WMS fields",
+    "examples": [
+      "custom:temperature_controlled",
+      "custom:hazmat_class",
+      "custom:storage_requirements"
+    ]
+  },
+  "wms_specific": {
+    "location_hierarchy": {
+      "description": "WMS uses hierarchical location structure",
+      "levels": ["zone_id", "aisle", "rack", "level"],
+      "location_code_format": "ZONE-AISLE-RACK-LEVEL"
+    },
+    "inventory_tracking": {
+      "lot_tracking": true,
+      "serial_tracking": false,
+      "expiration_tracking": true
+    },
+    "required_for_receiving": [
+      "item_id",
+      "item_name",
+      "location_code",
+      "available_quantity"
+    ],
+    "required_for_picking": [
+      "item_id",
+      "location_code",
+      "available_quantity"
+    ]
+  }
+}

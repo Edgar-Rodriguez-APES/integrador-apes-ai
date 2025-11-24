@@ -31,7 +31,10 @@ This document breaks down the implementation into discrete, manageable tasks. Ea
   - _Requirements: 15.2_
 
 
-- [ ] 1.1 Create S3 bucket for configuration files
+- [x] 1.1 Create S3 bucket for configuration files
+
+
+
   - Bucket name: `siesa-integration-config-{account-id}`
   - Enable versioning
   - Configure encryption
@@ -39,7 +42,10 @@ This document breaks down the implementation into discrete, manageable tasks. Ea
   - _Requirements: 2.5, 15.12_
 
 
-- [ ] 1.2 Set up Secrets Manager structure
+- [x] 1.2 Set up Secrets Manager structure
+
+
+
   - Create naming convention documentation: siesa-integration/{client_id}/{product_type}
   - Prepare secret templates for Siesa credentials
   - Prepare secret templates for Kong product credentials (WMS deferred to Week 2)
@@ -47,7 +53,9 @@ This document breaks down the implementation into discrete, manageable tasks. Ea
 
   - _Requirements: 11.1, 11.2, 15.3_
 
-- [ ] 1.3 Create IAM roles and policies
+- [x] 1.3 Create IAM roles and policies
+
+
   - Lambda execution role with DynamoDB, Secrets Manager, S3, CloudWatch permissions
   - Step Functions execution role with Lambda, DynamoDB, SNS permissions
   - EventBridge execution role for Step Functions
@@ -55,12 +63,15 @@ This document breaks down the implementation into discrete, manageable tasks. Ea
   - Apply least-privilege principle
   - _Requirements: 7.3_
 
+
 - [ ] 1.4 Set up CloudWatch log groups
   - Create log groups for each Lambda function
 
   - Configure KMS encryption for logs
   - Set retention periods (30 days prod, 7 days test)
   - _Requirements: 8.1, 11.6_
+
+
 
 - [ ] 1.5 Create SNS topic for alerts
   - Topic name: `siesa-integration-alerts`

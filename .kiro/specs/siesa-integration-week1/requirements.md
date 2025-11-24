@@ -1,25 +1,35 @@
-# Requirements Document: Siesa ERP Integration - Week 1
+continue# Requirements Document: Siesa ERP Integration - Week 1
 
 ## Introduction
 
-This document defines the requirements for building an autonomous, production-ready integration between Siesa ERP and the RFID/WMS platform (Kong/APES). The integration will be implemented as standalone AWS infrastructure (Lambda functions, Step Functions, CloudFormation) that operates independently without requiring AI agents at runtime.
+This document defines the requirements for building an autonomous, production-ready integration between Siesa ERP and our two product platforms: **Kong (RFID Backend)** and **WMS (Warehouse Management System)**. The integration will be implemented as standalone AWS infrastructure (Lambda functions, Step Functions, CloudFormation) that operates independently without requiring AI agents at runtime.
 
 **Timeline:** 5 business days (Monday to Friday)
 **Architecture:** "Build Once, Run Forever" - Generated code runs autonomously
-**Scope:** Siesa Cloud ERP integration for WMS-RFID operations (inventory, products, locations)
+**Deployment:** Centralized in Principal AWS Account (224874703567) serving multiple clients
+**Scope:** Siesa Cloud ERP integration for both Kong/RFID and WMS operations (inventory, products, locations)
+**Product Context:** Each Siesa client uses ONLY ONE product (either Kong/RFID OR WMS, never both)
 
 ## Glossary
 
 - **Siesa ERP**: Colombian cloud-based ERP system with Inventory (Inventarios) module
-- **Kong/APES**: Target RFID/WMS platform that manages warehouse operations, inventory tracking, and RFID tag management
-- **Canonical Model**: Standardized intermediate data structure used to transform between Siesa and Kong/APES formats
+- **Kong (RFID Backend)**: Monolithic RFID platform with RDS database that manages RFID tag operations and inventory tracking
+- **WMS (Warehouse Management System)**: Microservices-based warehouse management platform that manages warehouse operations, locations, and inventory
+- **Product Type**: Identifier indicating which product a client uses (either "kong" or "wms")
+- **Product Adapter**: Software component that implements product-specific API integration logic following the Adapter Pattern
+- **Canonical Model**: Standardized intermediate data structure used to transform between Siesa and product-specific formats
 - **Lambda Function**: AWS serverless function that executes integration logic
 - **Step Function**: AWS workflow orchestration service that coordinates Lambda executions
 - **CloudFormation**: AWS infrastructure-as-code service for deploying the complete integration stack
 - **Siesa Connector Module**: Siesa's API connectivity layer for external integrations
-- **RFID Tag**: Radio-frequency identification tag used for tracking inventory items in the warehouse
-- **Integration Workflow**: Complete data flow from Siesa → Transformation → Kong/APES
+- **RFID Tag**: Radio-frequency identification tag used for tracking inventory items in the warehouse (Kong product only)
+- **Integration Workflow**: Complete data flow from Siesa → Transformation → Product (Kong or WMS)
 - **Autonomous Integration**: Integration code that runs independently without AI agent runtime dependencies
+- **Principal Account**: AWS account (224874703567) where the integration infrastructure is deployed, serving as the central hub for all client integrations
+- **Client Account**: Individual AWS account for each client where their product instance (Kong or WMS) and data reside
+- **Multi-Tenant**: Architecture pattern where a single integration instance serves multiple clients with isolated configurations and credentials
+- **Multi-Product**: Architecture pattern where a single integration supports multiple product types (Kong and WMS) through adapters
+- **Client Configuration**: Per-client settings including Siesa URL, product type, product API URL, credentials, and sync schedules stored in DynamoDB
 
 ## Requirements
 
@@ -73,33 +83,34 @@ This document defines the requirements for building an autonomous, production-re
 5. THE Lambda Function SHALL handle missing or invalid data by logging warnings and using default values where appropriate
 6. THE Lambda Function SHALL return transformed data in canonical model format
 
-### Requirement 5: Lambda Function for Kong/APES Data Loading
+### Requirement 5: Lambda Function for Product Data Loading (Multi-Product Adapter)
 
-**User Story:** As a developer, I want a Lambda function that loads transformed data to Kong/APES, so that the integration workflow is complete.
+**User Story:** As a developer, I want a Lambda function that loads transformed data to the appropriate product (Kong or WMS), so that the integration workflow supports both products.
 
 #### Acceptance Criteria
 
-1. THE Lambda Function SHALL authenticate with Kong/APES APIs using credentials stored in AWS Secrets Manager
-2. THE Lambda Function SHALL receive canonical model data as input
-3. THE Lambda Function SHALL transform canonical data to Kong/APES required format
-4. THE Lambda Function SHALL execute POST/PUT requests to Kong/APES APIs
-5. THE Lambda Function SHALL handle API errors and implement retry logic (up to 3 retries)
-6. THE Lambda Function SHALL log successful and failed records to CloudWatch
-7. THE Lambda Function SHALL return a summary report with counts of successful and failed records
+1. THE Lambda Function SHALL receive canonical model data and product_type as input
+2. THE Lambda Function SHALL select the appropriate Product Adapter based on product_type ("kong" or "wms")
+3. THE Lambda Function SHALL authenticate with product APIs using credentials stored in AWS Secrets Manager
+4. THE Kong Adapter SHALL transform canonical data to Kong-specific format and call Kong REST APIs
+5. THE WMS Adapter SHALL transform canonical data to WMS-specific format and call WMS microservices APIs
+6. THE Lambda Function SHALL handle API errors and implement retry logic (up to 3 retries)
+7. THE Lambda Function SHALL log successful and failed records to CloudWatch with product_type context
+8. THE Lambda Function SHALL return a summary report with counts of successful and failed records
 
 ### Requirement 6: Step Functions Workflow Orchestration
 
-**User Story:** As a developer, I want a Step Functions workflow that orchestrates the complete integration, so that data flows reliably from Siesa to Kong/APES.
+**User Story:** As a developer, I want a Step Functions workflow that orchestrates the complete integration, so that data flows reliably from Siesa to the appropriate product (Kong or WMS).
 
 #### Acceptance Criteria
 
 1. THE Step Function SHALL define a workflow with three sequential steps: Extract → Transform → Load
 2. THE Step Function SHALL invoke the Siesa extraction Lambda (Requirement 3) as the first step
-3. THE Step Function SHALL pass extracted data to the transformation Lambda (Requirement 4) as the second step
-4. THE Step Function SHALL pass transformed data to the Kong/APES loading Lambda (Requirement 5) as the third step
+3. THE Step Function SHALL pass extracted data and product_type to the transformation Lambda (Requirement 4) as the second step
+4. THE Step Function SHALL pass transformed data and product_type to the product loading Lambda (Requirement 5) as the third step
 5. THE Step Function SHALL implement error handling with retry logic and failure notifications
-6. THE Step Function SHALL log workflow execution state to DynamoDB
-7. THE Step Function SHALL support manual triggering and scheduled execution (e.g., daily at 2 AM)
+6. THE Step Function SHALL log workflow execution state to DynamoDB with product_type context
+7. THE Step Function SHALL support manual triggering and scheduled execution (e.g., every 6 hours for Kong, every 4 hours for WMS)
 
 ### Requirement 7: CloudFormation Infrastructure Template
 
@@ -187,3 +198,37 @@ This document defines the requirements for building an autonomous, production-re
 3. THE Integration SHALL document how to configure Siesa and Kong/APES credentials in Secrets Manager
 4. THE Integration SHALL document how to trigger manual executions and view logs
 5. THE Integration SHALL include troubleshooting guide for common error scenarios
+
+### Requirement 14: Product Adapter Pattern Implementation
+
+**User Story:** As a developer, I want a flexible adapter pattern for product integrations, so that new products can be added without modifying existing code.
+
+#### Acceptance Criteria
+
+1. THE Integration SHALL define an abstract ProductAdapter base class with methods: transform_products(), load_batch(), validate_product(), get_api_client()
+2. THE Integration SHALL implement a KongAdapter class that extends ProductAdapter for Kong/RFID product integration
+3. THE Integration SHALL implement a WMSAdapter class that extends ProductAdapter for WMS product integration
+4. THE KongAdapter SHALL transform canonical data to Kong-specific format with fields: product_id, external_reference, name, barcode, quantity, rfid_tag_id
+5. THE WMSAdapter SHALL transform canonical data to WMS-specific format with fields: item_id, external_item_code, item_name, ean_code, available_quantity, location_code, zone_id
+6. THE Integration SHALL implement an AdapterFactory class that creates the appropriate adapter based on product_type
+7. THE Integration SHALL support adding new product adapters (e.g., TMS) by creating new adapter classes without modifying the Loader Lambda core logic
+8. THE Integration SHALL validate product-specific requirements in each adapter (e.g., WMS requires location_code, Kong supports rfid_tag_id)
+
+### Requirement 15: Multi-Tenant and Multi-Product Architecture
+
+**User Story:** As a platform administrator, I want a single integration deployment that serves multiple clients using different products, so that I can manage all client integrations centrally regardless of whether they use Kong or WMS.
+
+#### Acceptance Criteria
+
+1. THE Integration SHALL be deployed once in the Principal AWS Account (224874703567) and serve multiple clients simultaneously
+2. THE Integration SHALL store client-specific configurations in a DynamoDB table with fields: client_id, client_name, product_type, siesa_api_url, product_api_url, sync_schedule, field_mappings_key, enabled status
+3. THE Integration SHALL store client-specific credentials in AWS Secrets Manager with naming pattern: "siesa-integration/{client_id}/siesa" and "siesa-integration/{client_id}/{product_type}"
+4. THE Integration SHALL accept client_id as a parameter in Step Functions executions to determine which client's data to synchronize
+5. THE Integration SHALL read product_type from client configuration and route to the appropriate Product Adapter (Kong or WMS)
+6. THE Integration SHALL support adding new clients by creating configuration entries and secrets without modifying or redeploying code
+7. THE Integration SHALL isolate client data throughout the workflow ensuring no data leakage between clients
+8. THE Integration SHALL support different sync schedules per client via EventBridge rules with client_id in the input payload
+9. THE Integration SHALL call product-specific REST APIs for each client using their respective API URLs and credentials
+10. THE Integration SHALL log all operations with client_id and product_type for traceability and debugging
+11. THE Integration SHALL support enabling/disabling individual clients without affecting others
+12. THE Integration SHALL load product-specific field mappings from S3 based on the field_mappings_key in client configuration

@@ -1,0 +1,155 @@
+{
+  "version": "1.0",
+  "product_type": "kong",
+  "description": "Field mappings for Kong (RFID Backend) product integration",
+  "last_updated": "2025-01-15T00:00:00Z",
+  "mappings": {
+    "product": {
+      "id": {
+        "siesa_field": "f_codigo",
+        "product_field": "product_id",
+        "type": "string",
+        "required": true,
+        "description": "Unique product identifier"
+      },
+      "external_id": {
+        "siesa_field": "f_codigo_externo",
+        "product_field": "external_reference",
+        "type": "string",
+        "required": true,
+        "description": "External reference code from Siesa"
+      },
+      "name": {
+        "siesa_field": "f_nombre",
+        "product_field": "name",
+        "type": "string",
+        "required": true,
+        "description": "Product name"
+      },
+      "display_name": {
+        "siesa_field": "f_nombre_comercial",
+        "product_field": "display_name",
+        "type": "string",
+        "required": false,
+        "description": "Commercial display name"
+      },
+      "ean": {
+        "siesa_field": "f_ean",
+        "product_field": "barcode",
+        "type": "string",
+        "required": false,
+        "validation": "^[0-9]{13}$",
+        "description": "EAN-13 barcode"
+      },
+      "sku": {
+        "siesa_field": "f_sku",
+        "product_field": "sku",
+        "type": "string",
+        "required": true,
+        "description": "Stock keeping unit"
+      },
+      "category": {
+        "siesa_field": "f_categoria",
+        "product_field": "category",
+        "type": "string",
+        "required": false,
+        "description": "Product category"
+      },
+      "stock_quantity": {
+        "siesa_field": "f_cantidad",
+        "product_field": "quantity",
+        "type": "integer",
+        "required": true,
+        "description": "Available stock quantity"
+      },
+      "warehouse_location": {
+        "siesa_field": "f_ubicacion",
+        "product_field": "location",
+        "type": "string",
+        "required": false,
+        "description": "Warehouse location code"
+      },
+      "rfid_tag": {
+        "siesa_field": "f_tag_rfid",
+        "product_field": "rfid_tag_id",
+        "type": "string",
+        "required": false,
+        "description": "RFID tag identifier (Kong-specific)"
+      },
+      "unit_price": {
+        "siesa_field": "f_precio_unitario",
+        "product_field": "unit_price",
+        "type": "decimal",
+        "required": false,
+        "description": "Unit price in local currency"
+      },
+      "weight": {
+        "siesa_field": "f_peso",
+        "product_field": "weight",
+        "type": "decimal",
+        "required": false,
+        "description": "Product weight in kg"
+      },
+      "dimensions": {
+        "siesa_field": "f_dimensiones",
+        "product_field": "dimensions",
+        "type": "string",
+        "required": false,
+        "description": "Product dimensions (LxWxH)"
+      },
+      "status": {
+        "siesa_field": "f_estado",
+        "product_field": "status",
+        "type": "string",
+        "required": false,
+        "default": "active",
+        "description": "Product status (active/inactive)"
+      }
+    }
+  },
+  "transformations": {
+    "date_format": {
+      "from": "YYYY-MM-DD",
+      "to": "ISO8601",
+      "description": "Convert Siesa date format to ISO8601"
+    },
+    "decimal_separator": {
+      "from": ",",
+      "to": ".",
+      "description": "Convert decimal separator from comma to dot"
+    },
+    "boolean_conversion": {
+      "true_values": ["S", "SI", "1", "true"],
+      "false_values": ["N", "NO", "0", "false"],
+      "description": "Convert Siesa boolean values to standard boolean"
+    }
+  },
+  "validation_rules": {
+    "ean": {
+      "pattern": "^[0-9]{13}$",
+      "message": "EAN must be exactly 13 digits"
+    },
+    "quantity": {
+      "min": 0,
+      "message": "Quantity cannot be negative"
+    },
+    "unit_price": {
+      "min": 0,
+      "message": "Unit price cannot be negative"
+    }
+  },
+  "default_values": {
+    "status": "active",
+    "category": "uncategorized",
+    "quantity": 0
+  },
+  "custom_fields": {
+    "prefix": "custom:",
+    "description": "Custom fields from Siesa that don't map to standard Kong fields",
+    "examples": [
+      "custom:color",
+      "custom:size",
+      "custom:material"
+    ]
+  }
+}
