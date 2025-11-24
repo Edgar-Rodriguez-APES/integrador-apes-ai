@@ -1,0 +1,14 @@
+[bandit]
+# Bandit configuration file
+exclude_dirs = /tests/,/venv/,/.venv/,/node_modules/
+
+# Tests to skip (comma-separated list of test IDs)
+# B101: assert_used - We use asserts in tests
+# B601: paramiko_calls - Not using paramiko
+skips = B101,B601
+
+# Severity level to report (all, low, medium, high)
+level = low
+
+# Confidence level to report (all, low, medium, high)
+confidence = medium

@@ -82,6 +82,7 @@ siesa-integration-service/
 - AWS CLI configured with access to account 224874703567
 - AWS CDK CLI installed (`npm install -g aws-cdk`)
 - TypeScript
+- Python 3.11+ (for Lambda functions)
 
 ### Installation
 
@@ -89,12 +90,28 @@ siesa-integration-service/
 # Install dependencies
 npm install
 
+# Install Python tools for development
+pip install bandit pylint flake8 pytest
+
 # Bootstrap CDK (first time only in account 224874703567)
 npm run bootstrap
 
 # Build the project
 npm run build
 ```
+
+### Pre-Deploy Analysis
+
+**⚠️ IMPORTANTE**: Antes de hacer deploy, ejecuta el análisis de código:
+
+```powershell
+# Ejecutar análisis completo
+.\scripts\run-pre-deploy-checks.ps1
+
+# Revisar reportes en pre-deploy-reports/SUMMARY.md
+```
+
+Ver guía completa: [QUICK-START-ANALYSIS.md](QUICK-START-ANALYSIS.md)
 
 ### Deployment
 
@@ -216,6 +233,20 @@ Each tenant is configured in DynamoDB with:
 - **Secrets Manager**: Secure credential storage
 - **Encryption**: At rest (DynamoDB, S3) and in transit (TLS)
 - **VPC**: Optional VPC deployment for Lambda functions
+- **Code Analysis**: Automated security scanning with Bandit, pip-audit
+- **Quality Gates**: Pre-deploy checks prevent vulnerable code deployment
+
+### Security Analysis
+
+```powershell
+# Ejecutar análisis de seguridad
+.\scripts\run-pre-deploy-checks.ps1
+
+# Ver reporte de seguridad
+cat pre-deploy-reports/bandit-report.txt
+```
+
+Ver: [PRE-DEPLOY-ANALYSIS-GUIDE.md](PRE-DEPLOY-ANALYSIS-GUIDE.md)
 
 ## Testing
 
