@@ -86,7 +86,9 @@ This document breaks down the implementation into discrete, manageable tasks. Ea
 
 ## Phase 2: Lambda Functions Implementation
 
-- [ ] 2. Implement Extractor Lambda function
+- [x] 2. Implement Extractor Lambda function
+
+
   - Create Python project structure with requirements.txt
   - Implement client config retrieval from DynamoDB
   - Implement Secrets Manager credential retrieval
