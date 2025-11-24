@@ -369,18 +369,17 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         # Extract products
         products = extract_all_products(siesa_client, sync_type, last_sync_timestamp)
         
-        # Prepare response
+        # Prepare response (format for Step Functions)
         extraction_timestamp = datetime.now(timezone.utc).isoformat()
+        product_type = config.get('productType', 'kong')
         
         response = {
             'client_id': client_id,
-            'tenantId': client_id,
-            'productType': config.get('productType', 'KONG_RFID'),
+            'product_type': product_type,
             'products': products,
             'count': len(products),
             'sync_type': sync_type,
-            'extraction_timestamp': extraction_timestamp,
-            'status': 'success'
+            'extraction_timestamp': extraction_timestamp
         }
         
         logger.info(f"Extraction completed successfully. Products: {len(products)}")
@@ -390,9 +389,5 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Extraction failed: {sanitize_log_message(str(e))}", exc_info=True)
         
-        return {
-            'client_id': event.get('client_id', 'unknown'),
-            'status': 'error',
-            'error': sanitize_log_message(str(e)),
-            'extraction_timestamp': datetime.now(timezone.utc).isoformat()
-        }
+        # Re-raise the exception so Step Functions can catch it
+        raise Exception(f"Extractor Lambda failed: {sanitize_log_message(str(e))}")

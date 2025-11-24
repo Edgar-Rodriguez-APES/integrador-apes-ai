@@ -161,11 +161,16 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         # Sanitize input event
         event = sanitize_dict(event)
         
-        # Extract parameters from event
+        # Extract parameters from event (support both formats)
         client_id = event.get('client_id') or event.get('tenantId')
-        product_type = event.get('productType', 'KONG_RFID')
+        product_type = event.get('product_type') or event.get('productType', 'kong')
         canonical_products = event.get('canonical_products', [])
         transformation_timestamp = event.get('transformation_timestamp')
+        extraction_timestamp = event.get('extraction_timestamp')
+        count = event.get('count', len(canonical_products))
+        
+        # Generate sync_id for tracking
+        sync_id = f"sync-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
         
         if not client_id:
             raise ValueError("Missing required parameter: client_id")
@@ -174,12 +179,14 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             logger.warning(f"No products to load for client: {sanitize_log_message(client_id)}")
             return {
                 'client_id': client_id,
-                'tenantId': client_id,
-                'productType': product_type,
+                'product_type': product_type,
+                'sync_id': sync_id,
                 'status': 'success',
                 'records_processed': 0,
                 'records_success': 0,
                 'records_failed': 0,
+                'failed_records': [],
+                'extraction_timestamp': extraction_timestamp,
                 'transformation_timestamp': transformation_timestamp,
                 'load_timestamp': datetime.now(timezone.utc).isoformat(),
                 'duration_seconds': 0
@@ -232,22 +239,30 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             records_failed=results['total_failed']
         )
         
-        # Prepare response
+        # Prepare response (format for Step Functions)
         load_timestamp = datetime.now(timezone.utc).isoformat()
+        
+        # Prepare failed records summary (limit to first 10 for response size)
+        failed_records = []
+        for error in results.get('validation_errors', [])[:10]:
+            failed_records.append({
+                'id': error.get('product_id', 'unknown'),
+                'error': error.get('error', 'Validation failed')
+            })
         
         response = {
             'client_id': client_id,
-            'tenantId': client_id,
-            'productType': product_type,
+            'product_type': product_type,
+            'sync_id': sync_id,
             'status': status,
             'records_processed': results['total_processed'],
             'records_success': results['total_success'],
             'records_failed': results['total_failed'],
-            'validation_errors': results['validation_errors'],
-            'batch_results': results['batch_results'],
+            'failed_records': failed_records,
+            'extraction_timestamp': extraction_timestamp,
             'transformation_timestamp': transformation_timestamp,
             'load_timestamp': load_timestamp,
-            'duration_seconds': duration_seconds
+            'duration_seconds': int(duration_seconds)
         }
         
         logger.info(f"Load completed. Status: {status}, Success: {results['total_success']}, Failed: {results['total_failed']}, Duration: {duration_seconds}s")
@@ -257,14 +272,8 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Load failed: {sanitize_log_message(str(e))}", exc_info=True)
         
-        return {
-            'client_id': event.get('client_id', 'unknown'),
-            'tenantId': event.get('client_id', 'unknown'),
-            'productType': event.get('productType', 'unknown'),
-            'status': 'error',
-            'error': sanitize_log_message(str(e)),
-            'records_processed': 0,
-            'records_success': 0,
-            'records_failed': len(event.get('canonical_products', [])),
-            'load_timestamp': datetime.now(timezone.utc).isoformat()
-        }
+        # Generate sync_id for error tracking
+        sync_id = f"sync-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
+        
+        # Re-raise the exception so Step Functions can catch it
+        raise Exception(f"Loader Lambda failed: {sanitize_log_message(str(e))}")

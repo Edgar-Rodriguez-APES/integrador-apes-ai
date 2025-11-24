@@ -1,19 +1,15 @@
-# Extractor Lambda Requirements
-# Python 3.11
+# Extractor Lambda Dependencies
 
 # AWS SDK
 boto3>=1.28.0
 botocore>=1.31.0
 
-# HTTP requests with retry logic
+# HTTP requests with retry
 requests>=2.31.0
 urllib3>=2.0.0
 
-# JSON handling (built-in, but explicit for clarity)
+# JSON handling (built-in)
 # json - built-in
 
-# Date/time handling (built-in)
-# datetime - built-in
-
-# Type hints (built-in for Python 3.11)
-# typing - built-in
+# Logging (built-in)
+# logging - built-in

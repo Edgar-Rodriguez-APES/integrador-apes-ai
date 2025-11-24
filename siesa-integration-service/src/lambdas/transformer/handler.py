@@ -285,11 +285,12 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         # Sanitize input event
         event = sanitize_dict(event)
         
-        # Extract parameters from event
+        # Extract parameters from event (support both formats)
         client_id = event.get('client_id') or event.get('tenantId')
-        product_type = event.get('productType', 'KONG_RFID')
+        product_type = event.get('product_type') or event.get('productType', 'kong')
         products = event.get('products', [])
         extraction_timestamp = event.get('extraction_timestamp')
+        sync_type = event.get('sync_type', 'incremental')
         
         if not client_id:
             raise ValueError("Missing required parameter: client_id")
@@ -298,22 +299,21 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             logger.warning(f"No products to transform for client: {sanitize_log_message(client_id)}")
             return {
                 'client_id': client_id,
-                'tenantId': client_id,
-                'productType': product_type,
+                'product_type': product_type,
                 'canonical_products': [],
                 'count': 0,
                 'extraction_timestamp': extraction_timestamp,
                 'transformation_timestamp': datetime.now(timezone.utc).isoformat(),
-                'validation_errors': [],
-                'status': 'success'
+                'validation_errors': []
             }
         
         logger.info(f"Starting transformation for client: {sanitize_log_message(client_id)}, products: {len(products)}")
         
         # Determine field mappings file based on product type
-        if product_type == 'KONG_RFID' or product_type == 'kong':
+        product_type_lower = product_type.lower()
+        if product_type_lower in ['kong_rfid', 'kong']:
             mappings_key = 'field-mappings-kong.json'
-        elif product_type == 'WMS' or product_type == 'wms':
+        elif product_type_lower in ['wms']:
             mappings_key = 'field-mappings-wms.json'
         else:
             raise ValueError(f"Unknown product type: {product_type}")
@@ -351,19 +351,17 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 # Continue with next product
                 continue
         
-        # Prepare response
+        # Prepare response (format for Step Functions)
         transformation_timestamp = datetime.now(timezone.utc).isoformat()
         
         response = {
             'client_id': client_id,
-            'tenantId': client_id,
-            'productType': product_type,
+            'product_type': product_type,
             'canonical_products': canonical_products,
             'count': len(canonical_products),
             'extraction_timestamp': extraction_timestamp,
             'transformation_timestamp': transformation_timestamp,
-            'validation_errors': all_validation_errors,
-            'status': 'success'
+            'validation_errors': all_validation_errors[:10]  # Limit to 10 for response size
         }
         
         logger.info(f"Transformation completed. Canonical products: {len(canonical_products)}, Errors: {len(all_validation_errors)}")
@@ -373,13 +371,5 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Transformation failed: {sanitize_log_message(str(e))}", exc_info=True)
         
-        return {
-            'client_id': event.get('client_id', 'unknown'),
-            'tenantId': event.get('client_id', 'unknown'),
-            'productType': event.get('productType', 'unknown'),
-            'canonical_products': [],
-            'count': 0,
-            'status': 'error',
-            'error': sanitize_log_message(str(e)),
-            'transformation_timestamp': datetime.now(timezone.utc).isoformat()
-        }
+        # Re-raise the exception so Step Functions can catch it
+        raise Exception(f"Transformer Lambda failed: {sanitize_log_message(str(e))}")

@@ -8,6 +8,10 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
+import * as path from 'path';
 
 export interface SiesaIntegrationStackProps extends cdk.StackProps {
   environment: string;
@@ -20,6 +24,11 @@ export class SiesaIntegrationStack extends cdk.Stack {
   public readonly configBucket: s3.Bucket;
   public readonly alertTopic: sns.Topic;
   public readonly lambdaExecutionRole: iam.Role;
+  public readonly stepFunctionsRole: iam.Role;
+  public readonly extractorFunction: lambda.Function;
+  public readonly transformerFunction: lambda.Function;
+  public readonly loaderFunction: lambda.Function;
+  public readonly stateMachine: sfn.StateMachine;
   
   constructor(scope: Construct, id: string, props: SiesaIntegrationStackProps) {
     super(scope, id, props);
@@ -266,27 +275,27 @@ export class SiesaIntegrationStack extends cdk.Stack {
     }));
 
     // Step Functions execution role
-    const stepFunctionsRole = new iam.Role(this, 'StepFunctionsRole', {
+    this.stepFunctionsRole = new iam.Role(this, 'StepFunctionsRole', {
       roleName: `siesa-integration-stepfunctions-role-${environment}`,
       assumedBy: new iam.ServicePrincipal('states.amazonaws.com')
     });
 
     // Add permissions for Lambda invocation
-    stepFunctionsRole.addToPolicy(new iam.PolicyStatement({
+    this.stepFunctionsRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ['lambda:InvokeFunction'],
       resources: [`arn:aws:lambda:${this.region}:${this.account}:function:siesa-integration-*`]
     }));
 
     // Add permissions for DynamoDB
-    stepFunctionsRole.addToPolicy(new iam.PolicyStatement({
+    this.stepFunctionsRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
-      actions: ['dynamodb:UpdateItem', 'dynamodb:PutItem'],
+      actions: ['dynamodb:UpdateItem', 'dynamodb:PutItem', 'dynamodb:GetItem'],
       resources: [this.configTable.tableArn, this.syncStateTable.tableArn]
     }));
 
     // Add permissions for SNS
-    stepFunctionsRole.addToPolicy(new iam.PolicyStatement({
+    this.stepFunctionsRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ['sns:Publish'],
       resources: [this.alertTopic.topicArn]
@@ -380,7 +389,182 @@ export class SiesaIntegrationStack extends cdk.Stack {
     });
 
     // ===========================================
-    // 8. Stack Outputs
+    // 8. Lambda Functions
+    // ===========================================
+    
+    // Extractor Lambda Function
+    this.extractorFunction = new lambda.Function(this, 'ExtractorFunction', {
+      functionName: `siesa-integration-extractor-${environment}`,
+      runtime: lambda.Runtime.PYTHON_3_11,
+      handler: 'handler.lambda_handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../../src/lambdas/extractor')),
+      role: this.lambdaExecutionRole,
+      timeout: cdk.Duration.minutes(5),
+      memorySize: 512,
+      environment: {
+        CONFIG_TABLE: this.configTable.tableName,
+        SYNC_STATE_TABLE: this.syncStateTable.tableName,
+        AUDIT_TABLE: this.auditTable.tableName,
+        ENVIRONMENT: environment,
+        LOG_LEVEL: 'INFO'
+      },
+      logGroup: extractorLogGroup,
+      description: 'Extracts data from Siesa ERP API'
+    });
+
+    // Transformer Lambda Function
+    this.transformerFunction = new lambda.Function(this, 'TransformerFunction', {
+      functionName: `siesa-integration-transformer-${environment}`,
+      runtime: lambda.Runtime.PYTHON_3_11,
+      handler: 'handler.lambda_handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../../src/lambdas/transformer')),
+      role: this.lambdaExecutionRole,
+      timeout: cdk.Duration.minutes(3),
+      memorySize: 256,
+      environment: {
+        CONFIG_BUCKET: this.configBucket.bucketName,
+        ENVIRONMENT: environment,
+        LOG_LEVEL: 'INFO'
+      },
+      logGroup: transformerLogGroup,
+      description: 'Transforms Siesa data to canonical model'
+    });
+
+    // Loader Lambda Function
+    this.loaderFunction = new lambda.Function(this, 'LoaderFunction', {
+      functionName: `siesa-integration-loader-${environment}`,
+      runtime: lambda.Runtime.PYTHON_3_11,
+      handler: 'handler.lambda_handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../../src/lambdas/loader')),
+      role: this.lambdaExecutionRole,
+      timeout: cdk.Duration.minutes(10),
+      memorySize: 512,
+      environment: {
+        CONFIG_TABLE: this.configTable.tableName,
+        SYNC_STATE_TABLE: this.syncStateTable.tableName,
+        AUDIT_TABLE: this.auditTable.tableName,
+        BATCH_SIZE: '100',
+        ENVIRONMENT: environment,
+        LOG_LEVEL: 'INFO'
+      },
+      logGroup: loaderLogGroup,
+      description: 'Loads transformed data to product APIs (Kong/WMS) using adapter pattern'
+    });
+
+    // ===========================================
+    // 9. Step Functions State Machine
+    // ===========================================
+    
+    // Define tasks for each Lambda function
+    const extractTask = new tasks.LambdaInvoke(this, 'ExtractFromSiesa', {
+      lambdaFunction: this.extractorFunction,
+      outputPath: '$.Payload',
+      retryOnServiceExceptions: true,
+      payload: sfn.TaskInput.fromObject({
+        'client_id.$': '$.client_id',
+        'sync_type.$': '$.sync_type'
+      })
+    });
+
+    const transformTask = new tasks.LambdaInvoke(this, 'TransformData', {
+      lambdaFunction: this.transformerFunction,
+      outputPath: '$.Payload',
+      retryOnServiceExceptions: true
+    });
+
+    const loadTask = new tasks.LambdaInvoke(this, 'LoadToProduct', {
+      lambdaFunction: this.loaderFunction,
+      outputPath: '$.Payload',
+      retryOnServiceExceptions: true
+    });
+
+    // Define DynamoDB update task for success
+    const logSuccessTask = new tasks.DynamoPutItem(this, 'LogSuccess', {
+      table: this.syncStateTable,
+      item: {
+        'tenantId': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.client_id')),
+        'syncId': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.sync_id')),
+        'status': tasks.DynamoAttributeValue.fromString('success'),
+        'timestamp': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.load_timestamp')),
+        'recordsProcessed': tasks.DynamoAttributeValue.numberFromString(sfn.JsonPath.stringAt('$.records_success')),
+        'productType': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.product_type'))
+      }
+    });
+
+    // Define SNS notification task for failure
+    const notifyFailureTask = new tasks.SnsPublish(this, 'NotifyFailure', {
+      topic: this.alertTopic,
+      subject: 'Siesa Integration Failed',
+      message: sfn.TaskInput.fromObject({
+        'client_id.$': '$.client_id',
+        'product_type.$': '$.product_type',
+        'error.$': '$.error',
+        'timestamp.$': '$$.State.EnteredTime'
+      })
+    });
+
+    // Define DynamoDB update task for failure
+    const logFailureTask = new tasks.DynamoPutItem(this, 'LogFailure', {
+      table: this.syncStateTable,
+      item: {
+        'tenantId': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.client_id')),
+        'syncId': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.sync_id')),
+        'status': tasks.DynamoAttributeValue.fromString('failed'),
+        'timestamp': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$$.State.EnteredTime')),
+        'error': tasks.DynamoAttributeValue.fromString(sfn.JsonPath.stringAt('$.error.Error'))
+      }
+    });
+
+    // Define retry configuration
+    const retryConfig = {
+      errors: ['States.TaskFailed', 'States.Timeout'],
+      interval: cdk.Duration.seconds(2),
+      maxAttempts: 3,
+      backoffRate: 2.0
+    };
+
+    // Add retry logic to tasks
+    extractTask.addRetry(retryConfig);
+    transformTask.addRetry(retryConfig);
+    loadTask.addRetry(retryConfig);
+
+    // Define error handling
+    const failureChain = notifyFailureTask.next(logFailureTask);
+    
+    extractTask.addCatch(failureChain, {
+      resultPath: '$.error'
+    });
+    
+    transformTask.addCatch(failureChain, {
+      resultPath: '$.error'
+    });
+    
+    loadTask.addCatch(failureChain, {
+      resultPath: '$.error'
+    });
+
+    // Define the workflow chain
+    const definition = extractTask
+      .next(transformTask)
+      .next(loadTask)
+      .next(logSuccessTask);
+
+    // Create the state machine
+    this.stateMachine = new sfn.StateMachine(this, 'SiesaIntegrationWorkflow', {
+      stateMachineName: `siesa-integration-workflow-${environment}`,
+      definition: definition,
+      role: this.stepFunctionsRole,
+      logs: {
+        destination: stepFunctionsLogGroup,
+        level: sfn.LogLevel.ALL,
+        includeExecutionData: true
+      },
+      tracingEnabled: true,
+      timeout: cdk.Duration.hours(2)
+    });
+
+    // ===========================================
+    // 10. Stack Outputs
     // ===========================================
     
     new cdk.CfnOutput(this, 'ConfigTableName', {
@@ -420,7 +604,7 @@ export class SiesaIntegrationStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'StepFunctionsRoleArn', {
-      value: stepFunctionsRole.roleArn,
+      value: this.stepFunctionsRole.roleArn,
       description: 'Step Functions execution role ARN',
       exportName: `SiesaIntegration-StepFunctionsRole-${environment}`
     });
@@ -455,8 +639,38 @@ export class SiesaIntegrationStack extends cdk.Stack {
       exportName: `SiesaIntegration-LoaderLogGroup-${environment}`
     });
 
+    new cdk.CfnOutput(this, 'ExtractorFunctionArn', {
+      value: this.extractorFunction.functionArn,
+      description: 'Extractor Lambda function ARN',
+      exportName: `SiesaIntegration-ExtractorFunction-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'TransformerFunctionArn', {
+      value: this.transformerFunction.functionArn,
+      description: 'Transformer Lambda function ARN',
+      exportName: `SiesaIntegration-TransformerFunction-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'LoaderFunctionArn', {
+      value: this.loaderFunction.functionArn,
+      description: 'Loader Lambda function ARN',
+      exportName: `SiesaIntegration-LoaderFunction-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'StateMachineArn', {
+      value: this.stateMachine.stateMachineArn,
+      description: 'Step Functions state machine ARN',
+      exportName: `SiesaIntegration-StateMachine-${environment}`
+    });
+
+    new cdk.CfnOutput(this, 'StateMachineConsoleUrl', {
+      value: `https://${this.region}.console.aws.amazon.com/states/home?region=${this.region}#/statemachines/view/${this.stateMachine.stateMachineArn}`,
+      description: 'Step Functions console URL',
+      exportName: `SiesaIntegration-StateMachineUrl-${environment}`
+    });
+
     // ===========================================
-    // 9. Tags
+    // 11. Tags
     // ===========================================
     
     cdk.Tags.of(this).add('Project', 'SiesaIntegration');
