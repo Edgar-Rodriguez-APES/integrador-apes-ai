@@ -10,14 +10,13 @@ from datetime import datetime, timezone
 from typing import Dict, List, Any
 import boto3
 from botocore.exceptions import ClientError
-from adapters import AdapterFactory
 
 # Import security utilities
 import sys
-import os
 # Add parent directory to path to import common module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from common.input_validation import sanitize_dict, sanitize_log_message, sanitize_dynamodb_key
+from loader.adapters.adapter_factory import AdapterFactory
 from common.logging_utils import get_safe_logger
 from common.metrics import get_metrics_publisher
 import time
@@ -160,7 +159,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         Dict with loading results and summary
     """
     metrics = get_metrics_publisher()
-    start_time = time.time()
+    start_time_metrics = time.time()
     client_id = None
     product_type = None
     
@@ -273,7 +272,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         }
         
         # Publish success metrics
-        duration = time.time() - start_time
+        duration = time.time() - start_time_metrics
         metrics.put_sync_duration(client_id, duration)
         metrics.put_records_processed(client_id, results['total_success'], True)
         if results['total_failed'] > 0:
@@ -289,7 +288,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         # Publish failure metrics
         if client_id:
-            duration = time.time() - start_time
+            duration = time.time() - start_time_metrics
             metrics.put_sync_duration(client_id, duration)
             metrics.put_records_processed(client_id, 0, False)
             metrics.put_error_count(client_id, type(e).__name__)
