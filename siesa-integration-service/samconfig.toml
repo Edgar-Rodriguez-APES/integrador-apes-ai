@@ -1,0 +1,14 @@
+version = 0.1
+
+[staging.deploy.parameters]
+stack_name = "siesa-integration-staging"
+resolve_s3 = true
+s3_prefix = "siesa-integration-staging"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
+parameter_overrides = "Environment=\"staging\""
+image_repositories = []
+
+[staging.global.parameters]
+region = "us-east-1"

@@ -1,6 +1,7 @@
 """
 Extractor Lambda Function
 Extracts product data from Siesa ERP API
+Adapted for Siesa Cloud v3 with ejecutarconsultaestandar
 """
 
 import json
@@ -17,14 +18,12 @@ from urllib3.util.retry import Retry
 
 # Import security utilities
 from common.input_validation import (
-    sanitize_dict, sanitize_log_message, sanitize_dynamodb_key,
-    sanitize_filter_expression, validate_product_data
+    sanitize_dict, sanitize_log_message, sanitize_dynamodb_key
 )
 from common.logging_utils import get_safe_logger
 from common.circuit_breaker import circuit_breaker
 from common.rate_limiter import rate_limit
 from common.metrics import get_metrics_publisher
-import time
 
 # Configure logging
 logger = get_safe_logger(__name__)
@@ -34,17 +33,18 @@ dynamodb = boto3.resource('dynamodb')
 secrets_manager = boto3.client('secretsmanager')
 
 # Environment variables
-CLIENTS_TABLE = os.environ.get('CLIENTS_TABLE', 'siesa-integration-config-dev')
+CLIENTS_TABLE = os.environ.get('DYNAMODB_TABLE', 'clients-config-staging')
 
 
 class SiesaAPIClient:
-    """Client for Siesa ERP API"""
+    """Client for Siesa ERP API v3 (Cloud)"""
     
-    def __init__(self, base_url: str, credentials: Dict[str, str]):
+    def __init__(self, base_url: str, credentials: Dict[str, str], id_compania: str, consulta_api: str):
         self.base_url = base_url.rstrip('/')
         self.credentials = credentials
+        self.id_compania = id_compania
+        self.consulta_api = consulta_api
         self.session = self._create_session()
-        self.token = None
     
     def _create_session(self) -> requests.Session:
         """Create requests session with retry logic"""
@@ -64,139 +64,102 @@ class SiesaAPIClient:
         
         return session
     
-    @circuit_breaker(failure_threshold=5, recovery_timeout=60)
-    @rate_limit(calls=100, period=60)
-    def authenticate(self) -> bool:
-        """Authenticate with Siesa API with improved validation"""
-        try:
-            # Siesa uses Bearer token + ConniKey + ConniToken
-            auth_url = f"{self.base_url}/auth/login"
-            
-            payload = {
-                "username": self.credentials.get('username'),
-                "password": self.credentials.get('password')
-            }
-            
-            headers = {
-                "Content-Type": "application/json",
-                "ConniKey": self.credentials.get('conniKey', ''),
-                "ConniToken": self.credentials.get('conniToken', '')
-            }
-            
-            response = self.session.post(auth_url, json=payload, headers=headers, timeout=30)
-            response.raise_for_status()
-            
-            data = response.json()
-            self.token = data.get('token') or data.get('access_token')
-            
-            # CRITICAL: Validate token was received
-            if not self.token:
-                logger.error(f"Authentication response missing token. Response keys: {list(data.keys())}")
-                raise ValueError(
-                    "Authentication succeeded but no token received. "
-                    "Check Siesa API response format."
-                )
-            
-            # Validate token format (basic check)
-            if not isinstance(self.token, str) or len(self.token) < 10:
-                logger.error(f"Invalid token format received: {type(self.token).__name__}")
-                raise ValueError("Invalid token format received from Siesa API")
-            
-            logger.info("Successfully authenticated with Siesa API")
-            return True
-            
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Authentication request failed: {sanitize_log_message(str(e))}")
-            raise
-        except (KeyError, ValueError) as e:
-            logger.error(f"Authentication validation failed: {sanitize_log_message(str(e))}")
-            raise
-        except Exception as e:
-            logger.error(f"Unexpected authentication error: {sanitize_log_message(str(e))}")
-            raise
+    def _get_headers(self) -> Dict[str, str]:
+        """Get standard headers for Siesa API with ConniKey and ConniToken"""
+        return {
+            "Content-Type": "application/json",
+            "ConniKey": self.credentials.get('conniKey', ''),
+            "ConniToken": self.credentials.get('conniToken', '')
+        }
     
     @circuit_breaker(failure_threshold=3, recovery_timeout=30)
     @rate_limit(calls=100, period=60)
-    def get_products(self, page: int = 1, page_size: int = 100, modified_since: Optional[str] = None) -> Dict[str, Any]:
+    def get_products(self, page: int = 1, page_size: int = 100) -> Dict[str, Any]:
         """
-        Get products from Siesa API with pagination and security improvements
+        Get products from Siesa API using ejecutarconsultaestandar
         
         Args:
             page: Page number (1-indexed)
-            page_size: Number of records per page
-            modified_since: ISO timestamp for incremental sync
+            page_size: Number of records per page (max 100)
         
         Returns:
             Dict with products and pagination info
         """
         try:
-            # Siesa pagination format: paginacion=numPag=1|tamPag=100
+            # Siesa ejecutarconsultaestandar endpoint
+            url = f"{self.base_url}/ejecutarconsultaestandar"
+            
+            # Siesa pagination format: numPag=1|tamPag=100
             pagination_param = f"numPag={page}|tamPag={page_size}"
             
-            url = f"{self.base_url}/inventarios/productos"
-            
-            headers = {
-                "Authorization": f"Bearer {self.token}",
-                "Content-Type": "application/json",
-                "ConniKey": self.credentials.get('conniKey', ''),
-                "ConniToken": self.credentials.get('conniToken', '')
-            }
-            
+            # Query parameters
             params = {
+                "idCompania": self.id_compania,
+                "descripcion": self.consulta_api,  # API_v2_Items
                 "paginacion": pagination_param
             }
             
-            # Add incremental sync filter if provided (with sanitization)
-            if modified_since:
-                # Sanitize filter expression to prevent injection
-                try:
-                    filter_expr = f"fechaModificacion>={modified_since}"
-                    sanitized_filter = sanitize_filter_expression(filter_expr)
-                    params['fechaModificacion'] = modified_since
-                except ValueError as e:
-                    logger.error(f"Invalid filter expression: {sanitize_log_message(str(e))}")
-                    # Continue without filter rather than fail
+            headers = self._get_headers()
+            
+            logger.info(f"Calling Siesa API: {url} with params: {params}")
             
             response = self.session.get(url, headers=headers, params=params, timeout=60)
             response.raise_for_status()
             
-            # Sanitize response data
-            data = sanitize_dict(response.json())
+            # Parse response
+            data = response.json()
             
-            # Extract products and pagination info
-            products = data.get('data', []) or data.get('productos', []) or data.get('items', [])
+            # Siesa returns data in different possible structures
+            # Try common response formats
+            products = []
+            
+            if isinstance(data, list):
+                # Direct list of products
+                products = data
+            elif isinstance(data, dict):
+                # Check common keys
+                products = (
+                    data.get('data', []) or 
+                    data.get('items', []) or 
+                    data.get('registros', []) or
+                    data.get('resultados', []) or
+                    []
+                )
             
             # Validate response structure
             if not isinstance(products, list):
                 logger.warning(f"Unexpected response structure from Siesa API: {type(products).__name__}")
                 products = []
             
-            # Validate and sanitize each product
-            validated_products = []
-            for i, product in enumerate(products):
-                try:
-                    validated_product = validate_product_data(product)
-                    validated_products.append(validated_product)
-                except ValueError as e:
-                    logger.warning(f"Product {i} validation failed: {sanitize_log_message(str(e))}, skipping")
-                    continue
+            # Sanitize products
+            sanitized_products = []
+            for product in products:
+                if isinstance(product, dict):
+                    sanitized_product = sanitize_dict(product)
+                    sanitized_products.append(sanitized_product)
             
             pagination_info = {
                 'current_page': page,
                 'page_size': page_size,
-                'total_records': data.get('totalRegistros', len(validated_products)),
-                'has_more': len(validated_products) == page_size
+                'records_in_page': len(sanitized_products),
+                'has_more': len(sanitized_products) == page_size
             }
             
-            logger.info(f"Retrieved and validated {len(validated_products)} products from page {page}")
+            logger.info(f"Retrieved {len(sanitized_products)} products from Siesa (page {page})")
             
             return {
-                'products': validated_products,
+                'products': sanitized_products,
                 'pagination': pagination_info
             }
             
+        except requests.exceptions.HTTPError as e:
+            logger.error(f"HTTP error from Siesa API (page {page}): {e.response.status_code} - {sanitize_log_message(str(e))}")
+            if e.response.status_code == 404:
+                # API or company not found
+                logger.error(f"API not found. Check idCompania ({self.id_compania}) and API name ({self.consulta_api})")
+            raise
         except requests.exceptions.RequestException as e:
-            logger.error(f"HTTP request failed for page {page}: {sanitize_log_message(str(e))}")
+            logger.error(f"Request failed for page {page}: {sanitize_log_message(str(e))}")
             raise
         except Exception as e:
             logger.error(f"Failed to get products from Siesa API: {sanitize_log_message(str(e))}")
@@ -221,8 +184,7 @@ def get_client_config(client_id: str) -> Dict[str, Any]:
         
         response = table.get_item(
             Key={
-                'tenantId': sanitized_client_id,
-                'configType': 'PRODUCT_CONFIG'
+                'client_id': sanitized_client_id
             }
         )
         
@@ -232,7 +194,7 @@ def get_client_config(client_id: str) -> Dict[str, Any]:
         config = response['Item']
         
         # Check if client is enabled
-        if not config.get('enabled', 'false') == 'true':
+        if not config.get('enabled', False):
             raise ValueError(f"Client is disabled: {sanitize_log_message(client_id)}")
         
         logger.info(f"Retrieved configuration for client: {sanitize_log_message(client_id)}")
@@ -257,7 +219,7 @@ def get_siesa_credentials(secret_arn: str) -> Dict[str, str]:
         secret_arn: ARN or name of the secret
     
     Returns:
-        Credentials dict
+        Credentials dict with conniKey, conniToken, idCompania
     """
     try:
         response = secrets_manager.get_secret_value(SecretId=secret_arn)
@@ -267,6 +229,12 @@ def get_siesa_credentials(secret_arn: str) -> Dict[str, str]:
             raise ValueError(f"Secret has no string value: {secret_arn}")
         
         credentials = json.loads(secret_string)
+        
+        # Validate required fields
+        if not credentials.get('conniKey'):
+            raise ValueError("Missing conniKey in credentials")
+        if not credentials.get('conniToken'):
+            raise ValueError("Missing conniToken in credentials")
         
         logger.info(f"Retrieved Siesa credentials from: {secret_arn}")
         return credentials
@@ -279,28 +247,26 @@ def get_siesa_credentials(secret_arn: str) -> Dict[str, str]:
         raise
 
 
-def extract_all_products(client: SiesaAPIClient, sync_type: str, last_sync_timestamp: Optional[str] = None) -> List[Dict[str, Any]]:
+def extract_all_products(client: SiesaAPIClient, sync_type: str) -> List[Dict[str, Any]]:
     """
     Extract all products with pagination
     
     Args:
         client: Siesa API client
-        sync_type: 'initial' or 'incremental'
-        last_sync_timestamp: Last sync timestamp for incremental sync
+        sync_type: 'initial' or 'incremental' (currently both work the same)
     
     Returns:
         List of all products
     """
     all_products = []
     page = 1
-    page_size = 100
+    page_size = 100  # Siesa max page size
     
-    # For incremental sync, use last sync timestamp
-    modified_since = last_sync_timestamp if sync_type == 'incremental' else None
+    logger.info(f"Starting product extraction (sync_type: {sync_type})")
     
     while True:
         try:
-            result = client.get_products(page=page, page_size=page_size, modified_since=modified_since)
+            result = client.get_products(page=page, page_size=page_size)
             
             products = result['products']
             pagination = result['pagination']
@@ -311,6 +277,7 @@ def extract_all_products(client: SiesaAPIClient, sync_type: str, last_sync_times
             
             # Check if there are more pages
             if not pagination['has_more']:
+                logger.info("No more pages available")
                 break
             
             page += 1
@@ -319,6 +286,9 @@ def extract_all_products(client: SiesaAPIClient, sync_type: str, last_sync_times
             if page > 1000:
                 logger.warning("Reached maximum page limit (1000). Stopping pagination.")
                 break
+            
+            # Small delay between pages to avoid rate limiting
+            time.sleep(0.5)
                 
         except Exception as e:
             logger.error(f"Error on page {page}: {str(e)}")
@@ -330,7 +300,8 @@ def extract_all_products(client: SiesaAPIClient, sync_type: str, last_sync_times
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
-    Lambda handler for Extractor function with security improvements
+    Lambda handler for Extractor function
+    Adapted for Siesa Cloud v3 API
     
     Args:
         event: Lambda event with client_id and sync_type
@@ -363,26 +334,24 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         siesa_config = config.get('siesaConfig', {})
         base_url = siesa_config.get('baseUrl')
         credentials_secret = siesa_config.get('credentialsSecretArn')
+        id_compania = siesa_config.get('idCompania', '8585')
+        consulta_api = siesa_config.get('consultaAPI', 'API_v2_Items')
         
         if not base_url or not credentials_secret:
             raise ValueError(f"Invalid Siesa configuration for client: {sanitize_log_message(client_id)}")
         
+        logger.info(f"Siesa config: baseUrl={base_url}, idCompania={id_compania}, consultaAPI={consulta_api}")
+        
         # Get Siesa credentials
         credentials = get_siesa_credentials(credentials_secret)
         
-        # Create Siesa API client
-        siesa_client = SiesaAPIClient(base_url, credentials)
-        
-        # Authenticate
-        siesa_client.authenticate()
-        
-        # Get last sync timestamp for incremental sync
-        last_sync_timestamp = config.get('lastSyncTimestamp') if sync_type == 'incremental' else None
+        # Create Siesa API client (NO authentication needed - uses ConniKey/Token)
+        siesa_client = SiesaAPIClient(base_url, credentials, id_compania, consulta_api)
         
         # Extract products
-        products = extract_all_products(siesa_client, sync_type, last_sync_timestamp)
+        products = extract_all_products(siesa_client, sync_type)
         
-        # Prepare response (format for Step Functions)
+        # Prepare response
         extraction_timestamp = datetime.now(timezone.utc).isoformat()
         product_type = config.get('productType', 'kong')
         
@@ -409,10 +378,9 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         }
         
     except ValueError as e:
-        # Handle validation errors (missing parameters, invalid config)
+        # Handle validation errors
         logger.error(f"Validation error: {sanitize_log_message(str(e))}")
         
-        # Publish failure metrics
         if client_id:
             duration = time.time() - start_time
             metrics.put_sync_duration(client_id, duration)
@@ -430,7 +398,6 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Extraction failed: {sanitize_log_message(str(e))}", exc_info=True)
         
-        # Publish failure metrics
         if client_id:
             duration = time.time() - start_time
             metrics.put_sync_duration(client_id, duration)

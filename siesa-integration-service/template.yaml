@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Siesa Integration Service
+
+Parameters:
+  Environment:
+    Type: String
+    Default: staging
+    AllowedValues:
+      - staging
+      - production
+
+Globals:
+  Function:
+    Timeout: 300
+    MemorySize: 512
+    Runtime: python3.12
+    Environment:
+      Variables:
+        ENVIRONMENT: !Ref Environment
+        DYNAMODB_TABLE: !Sub 'clients-config-${Environment}'
+
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'SiesaIntegrationRole-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: SiesaIntegrationPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:Query
+                Resource: !GetAtt ClientsConfigTable.Arn
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*'
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource: !Sub '${DataBucket.Arn}/*'
+              - Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - sts:AssumeRole
+                Resource: '*'
+
+  ClientsConfigTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'clients-config-${Environment}'
+      AttributeDefinitions:
+        - AttributeName: client_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: client_id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'siesa-integration-data-${Environment}-${AWS::AccountId}'
+
+  ExtractorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'siesa-extractor-${Environment}'
+      CodeUri: src/lambdas/
+      Handler: extractor.handler.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  TransformerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'siesa-transformer-${Environment}'
+      CodeUri: src/lambdas/
+      Handler: transformer.handler.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  LoaderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'siesa-loader-${Environment}'
+      CodeUri: src/lambdas/
+      Handler: loader.handler.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+Outputs:
+  ExtractorArn:
+    Value: !GetAtt ExtractorFunction.Arn
+  TransformerArn:
+    Value: !GetAtt TransformerFunction.Arn
+  LoaderArn:
+    Value: !GetAtt LoaderFunction.Arn
+  DynamoDBTable:
+    Value: !Ref ClientsConfigTable

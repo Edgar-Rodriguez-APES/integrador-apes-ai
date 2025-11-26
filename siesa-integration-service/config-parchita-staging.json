@@ -1,0 +1,21 @@
+{
+  "client_id": {"S": "parchita-staging"},
+  "client_name": {"S": "Parchita Staging"},
+  "enabled": {"BOOL": true},
+  "environment": {"S": "staging"},
+  "siesaConfig": {
+    "M": {
+      "baseUrl": {"S": "https://serviciosqa.siesacloud.com/api/siesa/v3"},
+      "credentialsSecretArn": {"S": "staging/parchita/siesa-credentials"},
+      "idCompania": {"S": "8585"},
+      "consultaAPI": {"S": "API_v2_Items"}
+    }
+  },
+  "kongConfig": {
+    "M": {
+      "baseUrl": {"S": "https://staging.kong.parchita.com"},
+      "credentialsSecretArn": {"S": "staging/parchita/kong-credentials"}
+    }
+  },
+  "batch_size": {"N": "100"}
+}
